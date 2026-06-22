@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M.N. Teas Investment — Material Order</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;background:#1b4f72;color:#fff;min-height:100vh}
+.app{max-width:720px;margin:0 auto;padding:1.5rem 1rem 4rem}
+.header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem}
+.header h1{font-size:17px;font-weight:600;color:#fff}
+.progress-bar{height:4px;background:rgba(255,255,255,.25);border-radius:2px;margin-bottom:1.5rem;overflow:hidden}
+.progress-fill{height:100%;background:#185FA5;border-radius:2px;transition:width .3s}
+.page-title{font-size:20px;font-weight:600;margin-bottom:.25rem;color:#fff}
+.page-sub{font-size:13px;color:rgba(255,255,255,.75);margin-bottom:1.5rem}
+.section-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:#fff;margin:1.25rem 0 .6rem;padding-bottom:.35rem;border-bottom:1px solid rgba(255,255,255,.3)}
+.field{display:flex;flex-direction:column;gap:5px;margin-bottom:1rem}
+.field label{font-size:13px;color:#fff;font-weight:500}
+.field input[type=text],.field input[type=number],.field select{padding:9px 12px;border:1px solid #a8b8c4;border-radius:8px;font-size:14px;font-family:inherit;background:#dde6ec;color:#1a2a3a;width:100%}
+.field input:focus,.field select:focus{outline:none;border-color:#378ADD}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.check-group{display:flex;flex-direction:column;gap:8px}
+.check-item{display:flex;align-items:center;gap:10px;padding:10px 12px;background:#c8d4dc;border:1px solid #a8b8c4;border-radius:8px;cursor:pointer;transition:all .15s;color:#1a2a3a}
+.check-item:hover{border-color:#185FA5;background:#b8c8d4}
+.check-item input[type=checkbox]{width:17px;height:17px;accent-color:#185FA5;flex-shrink:0}
+.check-item label{font-size:14px;cursor:pointer;flex:1;color:#1a2a3a}
+.room-card{background:#c8d4dc;border:1px solid #a8b8c4;border-radius:10px;padding:1rem;margin-bottom:1rem;color:#1a2a3a}
+.room-card-title{font-size:13px;font-weight:600;color:#1a3d5c;margin-bottom:.75rem;padding-bottom:.5rem;border-bottom:1px solid #a8b8c4}
+/* Material table */
+.mat-table{width:100%;border-collapse:collapse}
+.mat-table th{font-size:13px;color:#1a2a3a;font-weight:700;text-transform:uppercase;letter-spacing:.05em;padding:7px 8px;border-bottom:2px solid #8aacbc;text-align:left;background:#b0bec8}
+.mat-table th:nth-child(2),.mat-table th:nth-child(3){text-align:center}
+.mat-table th:last-child{text-align:right}
+.mat-table td{padding:7px 6px;border-bottom:1px solid #a8b8c4;vertical-align:middle;font-size:13px;color:#1a2a3a}
+.mat-table tr:last-child td{border-bottom:none}
+.mat-table input[type=number]{padding:5px 7px;border:1px solid #a8b8c4;border-radius:6px;font-size:13px;font-family:inherit;background:#dde6ec;width:70px;text-align:center;color:#1a2a3a}
+.mat-table input[type=number]:focus{outline:none;border-color:#185FA5;background:#eef4f8}
+.mat-table input[type=text]{padding:5px 7px;border:1px solid #a8b8c4;border-radius:6px;font-size:12px;font-family:inherit;background:#dde6ec;width:100%;color:#1a2a3a}
+.mat-table input[type=text]:focus{outline:none;border-color:#378ADD;background:#fff}
+.mat-table select{padding:5px 6px;border:1px solid #a8b8c4;border-radius:6px;font-size:12px;font-family:inherit;background:#dde6ec;width:100%;color:#1a2a3a}
+.mat-table select:focus{outline:none;border-color:#185FA5}
+.unit-tag{font-size:11px;color:#6a8a9a;display:block;margin-top:1px}
+.cost-input{padding:5px 7px;border:1px solid #a8b8c4;border-radius:6px;font-size:13px;font-family:inherit;background:#dde6ec;width:80px;text-align:right;color:#1a2a3a}
+.cost-input:focus{outline:none;border-color:#378ADD;background:#fff}
+.color-input{padding:4px 7px;border:1px solid #a8b8c4;border-radius:6px;font-size:12px;font-family:inherit;background:#dde6ec;width:110px;color:#1a2a3a}
+.color-input:focus{outline:none;border-color:#378ADD;background:#fff}
+.misc-section{margin-top:.75rem;padding-top:.75rem;border-top:1px solid #f0f0f0}
+.misc-row{display:flex;gap:8px;align-items:center;margin-bottom:6px}
+.misc-row input[type=text]{flex:2;padding:6px 9px;border:1px solid #a8b8c4;border-radius:6px;font-size:13px;font-family:inherit;background:#dde6ec;color:#1a2a3a}
+.misc-row input[type=number]{width:70px;padding:6px 7px;border:1px solid #a8b8c4;border-radius:6px;font-size:13px;font-family:inherit;background:#dde6ec;text-align:center;color:#1a2a3a}
+.misc-row select{flex:1;padding:6px 7px;border:1px solid #a8b8c4;border-radius:6px;font-size:12px;font-family:inherit;background:#dde6ec;color:#1a2a3a}
+.misc-row input:focus,.misc-row select:focus{outline:none;border-color:#378ADD;background:#fff}
+.misc-row button{padding:5px 10px;border:1px solid #a8b8c4;background:#dde6ec;border-radius:6px;font-size:13px;cursor:pointer;color:#c0392b}
+.misc-row button:hover{background:#fee;color:#c00;border-color:#fcc}
+.add-misc-btn{font-size:13px;color:#fff;background:rgba(255,255,255,.15);border:1px dashed rgba(255,255,255,.5);border-radius:6px;padding:6px 14px;cursor:pointer;margin-top:4px}
+.add-misc-btn:hover{background:rgba(255,255,255,.25)}
+.nav-bar{display:flex;justify-content:space-between;align-items:center;margin-top:2rem;padding-top:1rem;border-top:1px solid rgba(255,255,255,.3)}
+.btn{padding:10px 20px;border-radius:8px;font-size:14px;font-family:inherit;cursor:pointer;border:1px solid #a8b8c4;background:#dde6ec;color:#1a2a3a;transition:all .15s}
+.btn:hover{background:#c8d4dc}
+.btn.primary{background:#185FA5;color:#fff;border-color:#185FA5}
+.btn.primary:hover{background:#0c447c}
+.btn.sm{padding:6px 14px;font-size:13px;}
+.step-indicator{font-size:12px;color:rgba(255,255,255,.8)}
+.supplier-block{background:#c8d4dc;border:1px solid #a8b8c4;border-radius:10px;margin-bottom:1rem;overflow:hidden}
+.supplier-header{background:#b0bec8;padding:.75rem 1rem;font-size:13px;font-weight:600;display:flex;justify-content:space-between;align-items:center;color:#1a2a3a}
+.supplier-total{font-size:13px;color:#185FA5;font-weight:600}
+.master-row{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:10px;padding:8px 1rem;border-bottom:1px solid #a8b8c4;font-size:13px;align-items:center;color:#1a2a3a}
+.master-row:last-child{border-bottom:none}
+.master-row.hdr{font-size:11px;color:#1a2a3a;font-weight:600;text-transform:uppercase;background:#b8c8d4;letter-spacing:.04em}
+.grand-total-bar{background:#185FA5;color:#fff;border-radius:10px;padding:1rem 1.25rem;display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem}
+.grand-total-bar .lbl{font-size:13px;opacity:.85}
+.grand-total-bar .val{font-size:22px;font-weight:600}
+.export-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1rem}
+.empty-msg{font-size:13px;color:rgba(255,255,255,.7);padding:1.5rem;text-align:center}
+.color-badge{display:inline-block;font-size:11px;color:#185FA5;background:#e8f0fb;border-radius:4px;padding:1px 6px;margin-left:4px}
+@media(max-width:540px){.grid2{grid-template-columns:1fr}.grid3{grid-template-columns:1fr 1fr}}
+@media print{.nav-bar,.export-bar,.add-misc-btn,.header button{display:none}.app{padding:.5rem}}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <h1>📋 M.N. Teas Investment — Material Order</h1>
+    <button class="btn sm" onclick="resetAll()">↺ New</button>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:5%"></div></div>
+  <div id="pages-container"></div>
+</div>
+<script>
+const SUPPLIERS=['Home Depot',"Lowe's",'Crawford Electric','G-Town Lumber Supply','Brothers B&B Supply','84 Lumber','Floor & Decor','Ferguson','Viking Fence','Sherwin Williams','Amazon','Local supplier','Other'];
+
+// ── MATERIAL DEFINITIONS ──────────────────────────────────────────────────────
+const GENERAL_MATERIALS=[
+  // Drywall & framing
+  {id:'drywall-half',name:'Drywall 4×8 — ½"',unit:'sheets',unitSize:1,sup:'Home Depot',cost:14,hasColor:false,hasNote:false,group:'Drywall & Framing'},
+  {id:'drywall-58',name:'Drywall 4×8 — ⅝" (20 min)',unit:'sheets',unitSize:1,sup:'Home Depot',cost:16,hasColor:false,hasNote:false,group:'Drywall & Framing'},
+  {id:'drywall-metal-edge',name:'Drywall Metal Edge (8 ft stick)',unit:'sticks',unitSize:1,sup:'Home Depot',cost:2.50,hasColor:false,hasNote:false,group:'Drywall & Framing'},
+  {id:'drywall-compound',name:'Joint Compound (5 gal)',unit:'buckets',unitSize:1,sup:'Home Depot',cost:18,hasColor:false,hasNote:false,group:'Drywall & Framing'},
+  {id:'drywall-screws',name:'Drywall Screws (box)',unit:'boxes',unitSize:1,sup:'Home Depot',cost:12,hasColor:false,hasNote:false,group:'Drywall & Framing'},
+  {id:'stud-2x4',name:'2×4×8 Studs',unit:'studs',unitSize:1,sup:'G-Town Lumber Supply',cost:5.50,hasColor:false,hasNote:false,group:'Drywall & Framing'},
+  {id:'framing-nails',name:'Framing Nails — Wood to Concrete (box)',unit:'boxes',unitSize:1,sup:'Home Depot',cost:14,hasColor:false,hasNote:false,group:'Drywall & Framing'},
+  {id:'insulation',name:'Insulation (roll)',unit:'rolls',unitSize:1,sup:'Home Depot',cost:35,hasColor:false,hasNote:false,group:'Drywall & Framing'},
+  // Paint
+  {id:'primer',name:'Primer (1 gal)',unit:'gallons',unitSize:1,sup:'Sherwin Williams',cost:22,hasColor:false,hasNote:false,group:'Paint'},
+  {id:'paint-int',name:'Interior Paint (1 gal)',unit:'gallons',unitSize:1,sup:'Sherwin Williams',cost:35,hasColor:true,hasNote:false,group:'Paint'},
+  {id:'paint-trim',name:'Trim Paint (1 gal)',unit:'gallons',unitSize:1,sup:'Sherwin Williams',cost:38,hasColor:true,hasNote:false,group:'Paint'},
+  // Baseboard & trim
+  {id:'baseboard',name:'Baseboard (16 ft)',unit:'pieces',unitSize:1,sup:'G-Town Lumber Supply',cost:10,hasColor:false,hasNote:true,noteLabel:'Type / style',group:'Trim'},
+  {id:'doorstop',name:'Doorstops',unit:'units',unitSize:1,sup:'Amazon',cost:3,hasColor:false,hasNote:false,group:'Trim'},
+  // Doors
+  {id:'door-prehung',name:'Interior Door — Prehung',unit:'doors',unitSize:1,sup:'G-Town Lumber Supply',cost:180,hasColor:false,hasNote:true,noteLabel:'Dimensions (e.g. 2/8×6/8)',group:'Doors'},
+  {id:'door-slab',name:'Interior Door — Slab',unit:'doors',unitSize:1,sup:'G-Town Lumber Supply',cost:80,hasColor:false,hasNote:true,noteLabel:'Dimensions (e.g. 2/8×6/8)',group:'Doors'},
+  {id:'door-hinges',name:'Door Hinges (set of 3)',unit:'sets',unitSize:1,sup:'Amazon',cost:8,hasColor:true,hasNote:false,group:'Doors'},
+  {id:'door-handles',name:'Door Handles / Knobs',unit:'handles',unitSize:1,sup:'Amazon',cost:18,hasColor:true,hasNote:false,group:'Doors'},
+  // Living Areas Flooring
+  {id:'gen-lvp',name:'LVP Flooring',unit:'sq ft',unitSize:20,sup:'Floor & Decor',cost:3.50,hasColor:true,hasNote:false,group:'Living Areas Flooring',bundle:'gen-lvp'},
+  {id:'gen-floor-resist',name:'Floor Resistant / Underlayment',unit:'sq ft',unitSize:100,sup:'Floor & Decor',cost:0.45,hasColor:false,hasNote:false,group:'Living Areas Flooring',bundleChild:'gen-lvp'},
+  {id:'gen-floor-level',name:'Floor Leveling Compound (50 lb bag)',unit:'bags',unitSize:1,sup:'Home Depot',cost:22,hasColor:false,hasNote:false,group:'Living Areas Flooring',bundleChild:'gen-lvp'},
+  {id:'gen-carpet',name:'Carpet',unit:'sq ft',unitSize:12,sup:'Floor & Decor',cost:2.00,hasColor:true,hasNote:false,group:'Living Areas Flooring',bundle:'gen-carpet'},
+  {id:'gen-carpet-pad',name:'Carpet Pad',unit:'sq ft',unitSize:12,sup:'Floor & Decor',cost:0.65,hasColor:false,hasNote:false,group:'Living Areas Flooring',bundleChild:'gen-carpet'},
+  {id:'gen-floor-trim',name:'Floor Transition Strip',unit:'pieces',unitSize:1,sup:'Floor & Decor',cost:18,hasColor:false,hasNote:false,group:'Living Areas Flooring'},
+  // Safety & Smart Home
+  {id:'gen-doorbell',name:'Doorbell / Ring',unit:'units',unitSize:1,sup:'Amazon',cost:45,hasColor:false,hasNote:true,noteLabel:'Wired / wireless / video',group:'Safety & Smart Home'},
+  {id:'gen-alarm',name:'Alarm System / Panel',unit:'units',unitSize:1,sup:'Amazon',cost:180,hasColor:false,hasNote:true,noteLabel:'Brand / model',group:'Safety & Smart Home'},
+  {id:'gen-smoke-detector',name:'Smoke Detector',unit:'units',unitSize:1,sup:'Amazon',cost:22,hasColor:false,hasNote:false,group:'Safety & Smart Home'},
+  {id:'gen-co-detector',name:'Carbon Monoxide Detector',unit:'units',unitSize:1,sup:'Amazon',cost:28,hasColor:false,hasNote:false,group:'Safety & Smart Home'},
+  {id:'gen-combo-detector',name:'Smoke / CO Combo Detector',unit:'units',unitSize:1,sup:'Amazon',cost:35,hasColor:false,hasNote:false,group:'Safety & Smart Home'},
+  {id:'gen-ac-controller',name:'AC Controller / Smart Thermostat',unit:'units',unitSize:1,sup:'Amazon',cost:120,hasColor:false,hasNote:true,noteLabel:'Brand / model (e.g. Nest, Ecobee)',group:'Safety & Smart Home'},
+  // Electrical
+  {id:'light-fixture-gen',name:'Light Fixture — General',unit:'fixtures',unitSize:1,sup:'Amazon',cost:45,hasColor:false,hasNote:true,noteLabel:'Type / style',group:'Electrical'},
+  {id:'light-can-fixed',name:'Can Light — Fixed (non-swivel)',unit:'units',unitSize:1,sup:'Crawford Electric',cost:18,hasColor:false,hasNote:false,group:'Electrical'},
+  {id:'light-can-swivel',name:'Can Light — Swivel / Gimbal',unit:'units',unitSize:1,sup:'Crawford Electric',cost:22,hasColor:false,hasNote:false,group:'Electrical'},
+  {id:'fan-large',name:'Ceiling Fan — Large (52"+)',unit:'units',unitSize:1,sup:'Amazon',cost:150,hasColor:false,hasNote:true,noteLabel:'Style / finish',group:'Electrical'},
+  {id:'fan-medium',name:'Ceiling Fan — Medium (42"–52")',unit:'units',unitSize:1,sup:'Amazon',cost:110,hasColor:false,hasNote:true,noteLabel:'Style / finish',group:'Electrical'},
+  {id:'fan-small',name:'Ceiling Fan — Small (under 42")',unit:'units',unitSize:1,sup:'Amazon',cost:80,hasColor:false,hasNote:true,noteLabel:'Style / finish',group:'Electrical'},
+  {id:'wire-12-2',name:'Romex Wire 12/2 (250 ft roll)',unit:'rolls',unitSize:1,sup:'Crawford Electric',cost:75,hasColor:false,hasNote:false,group:'Electrical'},
+  {id:'outlet-white',name:'Outlets — White',unit:'units',unitSize:1,sup:'Crawford Electric',cost:3,hasColor:false,hasNote:false,group:'Electrical'},
+  {id:'outlet-cover-white',name:'Outlet Covers — White',unit:'units',unitSize:1,sup:'Crawford Electric',cost:1,hasColor:false,hasNote:false,group:'Electrical'},
+  {id:'switch-single-white',name:'Single Switch — White',unit:'units',unitSize:1,sup:'Crawford Electric',cost:3.50,hasColor:false,hasNote:false,group:'Electrical'},
+  {id:'switch-cover-single-white',name:'Switch Cover — Single, White',unit:'units',unitSize:1,sup:'Crawford Electric',cost:1,hasColor:false,hasNote:false,group:'Electrical'},
+  {id:'switch-cover-double-white',name:'Switch Cover — Double, White',unit:'units',unitSize:1,sup:'Crawford Electric',cost:1.50,hasColor:false,hasNote:false,group:'Electrical'},
+  {id:'switch-cover-triple-white',name:'Switch Cover — Triple, White',unit:'units',unitSize:1,sup:'Crawford Electric',cost:2,hasColor:false,hasNote:false,group:'Electrical'},
+];
+
+const KITCHEN_MATERIALS=[
+  // Cabinets & surfaces
+  {id:'k-cabinets',name:'Kitchen Cabinets',unit:'lin ft',unitSize:1,sup:'Home Depot',cost:120,hasColor:false,hasNote:true,noteLabel:'Style / color',group:'Cabinets & Surfaces'},
+  {id:'k-countertop',name:'Countertop',unit:'sq ft',unitSize:1,sup:'Home Depot',cost:45,hasColor:false,hasNote:true,noteLabel:'Material / color',group:'Cabinets & Surfaces'},
+  {id:'k-tile-back',name:'Backsplash Tile',unit:'sq ft',unitSize:5,sup:'Floor & Decor',cost:4,hasColor:true,hasNote:false,group:'Cabinets & Surfaces'},
+  // Flooring
+  {id:'k-lvp',name:'LVP Flooring',unit:'sq ft',unitSize:20,sup:'Floor & Decor',cost:3.50,hasColor:true,hasNote:false,group:'Flooring',bundle:'k-lvp'},
+  {id:'k-floor-resist',name:'Floor Resistant / Underlayment',unit:'sq ft',unitSize:100,sup:'Floor & Decor',cost:0.45,hasColor:false,hasNote:false,group:'Flooring',bundleChild:'k-lvp'},
+  {id:'k-floor-level',name:'Floor Leveling Compound (50 lb bag)',unit:'bags',unitSize:1,sup:'Home Depot',cost:22,hasColor:false,hasNote:false,group:'Flooring',bundleChild:'k-lvp'},
+  {id:'k-carpet',name:'Carpet',unit:'sq ft',unitSize:12,sup:'Floor & Decor',cost:2.00,hasColor:true,hasNote:false,group:'Flooring',bundle:'k-carpet'},
+  {id:'k-carpet-pad',name:'Carpet Pad',unit:'sq ft',unitSize:12,sup:'Floor & Decor',cost:0.65,hasColor:false,hasNote:false,group:'Flooring',bundleChild:'k-carpet'},
+  {id:'k-tile-floor',name:'Floor Tile',unit:'sq ft',unitSize:10,sup:'Floor & Decor',cost:2.50,hasColor:true,hasNote:false,group:'Flooring'},
+  // Plumbing
+  {id:'k-sink',name:'Kitchen Sink',unit:'units',unitSize:1,sup:'Ferguson',cost:250,hasColor:false,hasNote:true,noteLabel:'Style / finish',group:'Plumbing'},
+  {id:'k-faucet',name:'Kitchen Faucet',unit:'units',unitSize:1,sup:'Ferguson',cost:150,hasColor:false,hasNote:true,noteLabel:'Finish',group:'Plumbing'},
+  // Appliances
+  {id:'k-dishwasher',name:'Dishwasher',unit:'units',unitSize:1,sup:'Home Depot',cost:550,hasColor:false,hasNote:true,noteLabel:'Color / model',group:'Appliances'},
+  {id:'k-range',name:'Range / Stove',unit:'units',unitSize:1,sup:'Home Depot',cost:700,hasColor:false,hasNote:true,noteLabel:'Color / model',group:'Appliances'},
+  {id:'k-microwave',name:'Microwave (over-range)',unit:'units',unitSize:1,sup:'Home Depot',cost:300,hasColor:false,hasNote:true,noteLabel:'Color / model',group:'Appliances'},
+  {id:'k-hood',name:'Range Hood',unit:'units',unitSize:1,sup:'Home Depot',cost:200,hasColor:false,hasNote:true,noteLabel:'Color / model',group:'Appliances'},
+  {id:'k-refrigerator',name:'Refrigerator',unit:'units',unitSize:1,sup:'Home Depot',cost:1100,hasColor:false,hasNote:true,noteLabel:'Color / model',group:'Appliances'},
+  // Electrical
+  {id:'k-outlet-reg',name:'Outlets — Regular',unit:'units',unitSize:1,sup:'Crawford Electric',cost:3,hasColor:false,hasNote:false,group:'Electrical'},
+  {id:'k-outlet-gfci',name:'Outlets — GFCI',unit:'units',unitSize:1,sup:'Crawford Electric',cost:12,hasColor:false,hasNote:false,group:'Electrical'},
+  {id:'k-outlet-cover',name:'Outlet Covers',unit:'units',unitSize:1,sup:'Crawford Electric',cost:1,hasColor:false,hasNote:false,group:'Electrical'},
+  {id:'k-switch-single',name:'Light Switch — Single',unit:'units',unitSize:1,sup:'Crawford Electric',cost:3.50,hasColor:false,hasNote:false,group:'Electrical'},
+  {id:'k-switch-double',name:'Light Switch — Double',unit:'units',unitSize:1,sup:'Crawford Electric',cost:6,hasColor:false,hasNote:false,group:'Electrical'},
+  {id:'k-switch-cover-single',name:'Switch Cover — Single',unit:'units',unitSize:1,sup:'Crawford Electric',cost:1.50,hasColor:false,hasNote:false,group:'Electrical'},
+  {id:'k-switch-cover-double',name:'Switch Cover — Double',unit:'units',unitSize:1,sup:'Crawford Electric',cost:2.50,hasColor:false,hasNote:false,group:'Electrical'},
+  {id:'k-light-fixture',name:'Light Fixture — General',unit:'fixtures',unitSize:1,sup:'Amazon',cost:55,hasColor:false,hasNote:true,noteLabel:'Type / style',group:'Electrical'},
+  {id:'k-light-can-fixed',name:'Can Light — Fixed (non-swivel)',unit:'units',unitSize:1,sup:'Amazon',cost:18,hasColor:false,hasNote:false,group:'Electrical'},
+  {id:'k-light-can-swivel',name:'Can Light — Swivel / Gimbal',unit:'units',unitSize:1,sup:'Amazon',cost:22,hasColor:false,hasNote:false,group:'Electrical'},
+  {id:'k-under-cabinet-light',name:'Under Cabinet Lighting (strip)',unit:'strips',unitSize:1,sup:'Amazon',cost:35,hasColor:false,hasNote:false,group:'Electrical'},
+];
+
+const BATH_MATERIALS=[
+  // General Structure
+  {id:'b-cabinet',name:'Cabinets (custom / individual)',unit:'units',unitSize:1,sup:'Home Depot',cost:125,hasColor:true,hasNote:true,noteLabel:'Size / dimensions',group:'General Structure'},
+  {id:'b-countertop',name:'Countertop',unit:'sq ft',unitSize:1,sup:'Home Depot',cost:45,hasColor:false,hasNote:true,noteLabel:'Finish & dimensions',group:'General Structure'},
+  {id:'b-sink',name:'Sink (undermount / drop-in)',unit:'units',unitSize:1,sup:'Ferguson',cost:180,hasColor:false,hasNote:true,noteLabel:'Style / finish',group:'General Structure'},
+  {id:'b-vanity-single',name:'Prebuilt Vanity — Single',unit:'units',unitSize:1,sup:'Ferguson',cost:350,hasColor:false,hasNote:true,noteLabel:'Size & color (e.g. 30" white)',group:'General Structure'},
+  {id:'b-vanity-double',name:'Prebuilt Vanity — Double',unit:'units',unitSize:1,sup:'Ferguson',cost:650,hasColor:false,hasNote:true,noteLabel:'Size & color (e.g. 60" gray)',group:'General Structure'},
+  {id:'b-shower-door',name:'Shower Door',unit:'units',unitSize:1,sup:'Ferguson',cost:350,hasColor:false,hasNote:true,noteLabel:'Dimensions & type (e.g. 36" frameless)',group:'General Structure'},
+  {id:'b-bathtub',name:'Bathtub',unit:'units',unitSize:1,sup:'Ferguson',cost:550,hasColor:false,hasNote:true,noteLabel:'Size / style / color',group:'General Structure'},
+  // Plumbing Fixtures
+  {id:'b-faucet',name:'Bathroom Faucet',unit:'units',unitSize:1,sup:'Ferguson',cost:120,hasColor:false,hasNote:true,noteLabel:'Finish',group:'Plumbing Fixtures'},
+  {id:'b-toilet',name:'Toilet',unit:'units',unitSize:1,sup:'Ferguson',cost:200,hasColor:false,hasNote:true,noteLabel:'Style (round/elongated)',group:'Plumbing Fixtures'},
+  {id:'b-tub',name:'Tub / Tub Surround',unit:'units',unitSize:1,sup:'Ferguson',cost:450,hasColor:false,hasNote:true,noteLabel:'Style / color',group:'Plumbing Fixtures'},
+  {id:'b-shower',name:'Shower Kit / Pan',unit:'units',unitSize:1,sup:'Ferguson',cost:600,hasColor:false,hasNote:true,noteLabel:'Size / style',group:'Plumbing Fixtures'},
+  {id:'b-shower-valve',name:'Shower Valve + Trim',unit:'units',unitSize:1,sup:'Ferguson',cost:180,hasColor:false,hasNote:true,noteLabel:'Finish',group:'Plumbing Fixtures'},
+  // Tile
+  {id:'b-tile-wall',name:'Wall Tile — Primary',unit:'sq ft',unitSize:8,sup:'Floor & Decor',cost:3.50,hasColor:true,hasNote:true,noteLabel:'Style / size',group:'Tile'},
+  {id:'b-tile-wall-2',name:'Wall Tile — Secondary / Accent',unit:'sq ft',unitSize:8,sup:'Floor & Decor',cost:3.50,hasColor:true,hasNote:true,noteLabel:'Style / size',group:'Tile'},
+  {id:'b-tile-floor',name:'Floor Tile',unit:'sq ft',unitSize:6,sup:'Floor & Decor',cost:3,hasColor:true,hasNote:true,noteLabel:'Style / size',group:'Tile'},
+  {id:'b-tile-grout',name:'Grout (10 lb bag)',unit:'bags',unitSize:1,sup:'Home Depot',cost:12,hasColor:true,hasNote:false,group:'Tile'},
+  {id:'b-hardy-backer',name:'Hardy Backer / Cement Board (3×5 sheet)',unit:'sheets',unitSize:1,sup:'G-Town Lumber Supply',cost:14,hasColor:false,hasNote:false,group:'Tile'},
+  {id:'b-thinset',name:'Thinset (50 lb bag)',unit:'bags',unitSize:1,sup:'Home Depot',cost:18,hasColor:false,hasNote:false,group:'Tile'},
+  {id:'b-mortar',name:'Mortar (50 lb bag)',unit:'bags',unitSize:1,sup:'Home Depot',cost:16,hasColor:false,hasNote:false,group:'Tile'},
+  // Mirrors & accessories
+  {id:'b-mirror',name:'Mirror / Medicine Cabinet',unit:'units',unitSize:1,sup:'Home Depot',cost:120,hasColor:false,hasNote:true,noteLabel:'Size / style',group:'Mirrors & Accessories'},
+  {id:'b-hardware',name:'Towel Bar Set',unit:'sets',unitSize:1,sup:'Home Depot',cost:55,hasColor:false,hasNote:true,noteLabel:'Finish',group:'Mirrors & Accessories'},
+  {id:'b-tp-holder',name:'Toilet Paper Holder',unit:'units',unitSize:1,sup:'Home Depot',cost:20,hasColor:false,hasNote:true,noteLabel:'Finish',group:'Mirrors & Accessories'},
+  {id:'b-robe-hook',name:'Robe Hook',unit:'units',unitSize:1,sup:'Home Depot',cost:15,hasColor:false,hasNote:false,group:'Mirrors & Accessories'},
+  // Electrical
+  {id:'b-light-vanity',name:'Vanity Light Bar',unit:'units',unitSize:1,sup:'Amazon',cost:80,hasColor:false,hasNote:true,noteLabel:'Style / finish',group:'Electrical'},
+  {id:'b-exhaust',name:'Exhaust Fan',unit:'units',unitSize:1,sup:'Crawford Electric',cost:60,hasColor:false,hasNote:false,group:'Electrical'},
+  {id:'b-light-can',name:'Can Light',unit:'units',unitSize:1,sup:'Amazon',cost:18,hasColor:false,hasNote:false,group:'Electrical'},
+  {id:'b-outlet-reg',name:'Outlets — Regular',unit:'units',unitSize:1,sup:'Crawford Electric',cost:3,hasColor:false,hasNote:false,group:'Electrical'},
+  {id:'b-outlet-gfci',name:'Outlets — GFCI',unit:'units',unitSize:1,sup:'Crawford Electric',cost:12,hasColor:false,hasNote:false,group:'Electrical'},
+  {id:'b-outlet-cover',name:'Outlet Covers',unit:'units',unitSize:1,sup:'Crawford Electric',cost:1,hasColor:false,hasNote:false,group:'Electrical'},
+  {id:'b-switch-single',name:'Light Switch — Single',unit:'units',unitSize:1,sup:'Crawford Electric',cost:3.50,hasColor:false,hasNote:false,group:'Electrical'},
+  {id:'b-switch-cover',name:'Switch Cover',unit:'units',unitSize:1,sup:'Crawford Electric',cost:1.50,hasColor:false,hasNote:false,group:'Electrical'},
+];
+
+const BEDROOM_MATERIALS=[
+  // Flooring
+  {id:'bd-lvp',name:'LVP Flooring',unit:'sq ft',unitSize:20,sup:'Floor & Decor',cost:3.50,hasColor:true,hasNote:false,group:'Flooring',bundle:'lvp'},
+  {id:'bd-floor-resist',name:'Floor Resistant / Underlayment',unit:'sq ft',unitSize:100,sup:'Floor & Decor',cost:0.45,hasColor:false,hasNote:false,group:'Flooring',bundleChild:'lvp'},
+  {id:'bd-floor-level',name:'Floor Leveling Compound (50 lb bag)',unit:'bags',unitSize:1,sup:'Home Depot',cost:22,hasColor:false,hasNote:false,group:'Flooring',bundleChild:'lvp'},
+  {id:'bd-carpet',name:'Carpet',unit:'sq ft',unitSize:12,sup:'Floor & Decor',cost:2.00,hasColor:true,hasNote:false,group:'Flooring',bundle:'carpet'},
+  {id:'bd-carpet-pad',name:'Carpet Pad',unit:'sq ft',unitSize:12,sup:'Floor & Decor',cost:0.65,hasColor:false,hasNote:false,group:'Flooring',bundleChild:'carpet'},
+  {id:'bd-floor-trim',name:'Floor Transition Strip',unit:'pieces',unitSize:1,sup:'Floor & Decor',cost:18,hasColor:false,hasNote:false,group:'Flooring'},
+  // Building
+  {id:'bd-paint',name:'Interior Paint (1 gal)',unit:'gallons',unitSize:1,sup:'Sherwin Williams',cost:35,hasColor:true,hasNote:false,group:'Building'},
+  {id:'bd-primer',name:'Primer (1 gal)',unit:'gallons',unitSize:1,sup:'Sherwin Williams',cost:22,hasColor:false,hasNote:false,group:'Building'},
+  {id:'bd-baseboard',name:'Baseboard Trim (16 ft)',unit:'pieces',unitSize:1,sup:'G-Town Lumber Supply',cost:10,hasColor:false,hasNote:true,noteLabel:'Type / style',group:'Building'},
+  {id:'bd-door-prehung',name:'Interior Door — Prehung',unit:'doors',unitSize:1,sup:'Amazon',cost:180,hasColor:false,hasNote:true,noteLabel:'Dimensions (e.g. 2/8×6/8)',group:'Building'},
+  {id:'bd-door-slab',name:'Interior Door — Slab',unit:'doors',unitSize:1,sup:'Amazon',cost:80,hasColor:false,hasNote:true,noteLabel:'Dimensions (e.g. 2/8×6/8)',group:'Building'},
+  // Electrical
+  {id:'bd-switch-single',name:'Light Switch — Single',unit:'units',unitSize:1,sup:'Crawford Electric',cost:3.50,hasColor:false,hasNote:false,group:'Electrical'},
+  {id:'bd-switch-double',name:'Light Switch — Double',unit:'units',unitSize:1,sup:'Crawford Electric',cost:6.00,hasColor:false,hasNote:false,group:'Electrical'},
+  {id:'bd-switch-cover-single',name:'Switch Cover — Single',unit:'units',unitSize:1,sup:'Crawford Electric',cost:1.50,hasColor:false,hasNote:false,group:'Electrical'},
+  {id:'bd-switch-cover-double',name:'Switch Cover — Double',unit:'units',unitSize:1,sup:'Crawford Electric',cost:2.50,hasColor:false,hasNote:false,group:'Electrical'},
+  {id:'bd-outlet',name:'Outlets — Regular',unit:'units',unitSize:1,sup:'Crawford Electric',cost:3.00,hasColor:false,hasNote:false,group:'Electrical'},
+  {id:'bd-outlet-gfci',name:'Outlets — GFCI',unit:'units',unitSize:1,sup:'Crawford Electric',cost:12.00,hasColor:false,hasNote:false,group:'Electrical'},
+  {id:'bd-outlet-cover',name:'Outlet Covers',unit:'units',unitSize:1,sup:'Crawford Electric',cost:1.00,hasColor:false,hasNote:false,group:'Electrical'},
+  {id:'bd-ceiling-fan',name:'Ceiling Fan',unit:'units',unitSize:1,sup:'Amazon',cost:120,hasColor:false,hasNote:true,noteLabel:'Style / finish',group:'Electrical'},
+  {id:'bd-light-fixture',name:'Light Fixture — General',unit:'units',unitSize:1,sup:'Amazon',cost:55,hasColor:false,hasNote:true,noteLabel:'Type / style',group:'Electrical'},
+  {id:'bd-can-fixed',name:'Can Light — Fixed (non-swivel)',unit:'units',unitSize:1,sup:'Amazon',cost:18,hasColor:false,hasNote:false,group:'Electrical'},
+  {id:'bd-can-swivel',name:'Can Light — Swivel / Gimbal',unit:'units',unitSize:1,sup:'Amazon',cost:22,hasColor:false,hasNote:false,group:'Electrical'},
+  // Closet
+  {id:'bd-closet-rod',name:'Closet Rod + Shelf',unit:'units',unitSize:1,sup:'Home Depot',cost:35,hasColor:false,hasNote:false,group:'Closet'},
+  {id:'bd-closet-organizer',name:'Closet Shelving',unit:'units',unitSize:1,sup:'Amazon',cost:180,hasColor:false,hasNote:true,noteLabel:'Brand / style',group:'Closet'},
+  // Window treatments
+  {id:'bd-window-blind',name:'Window Blinds',unit:'units',unitSize:1,sup:'Home Depot',cost:45,hasColor:false,hasNote:true,noteLabel:'Size / color',group:'Window Treatments'},
+  {id:'bd-curtain-rod',name:'Curtain Rod',unit:'units',unitSize:1,sup:'Home Depot',cost:25,hasColor:false,hasNote:false,group:'Window Treatments'},
+];
+
+const GARAGE_MATERIALS=[
+  // Drywall & framing
+  {id:'gar-drywall-half',name:'Drywall 4×8 — ½"',unit:'sheets',unitSize:1,sup:'G-Town Lumber Supply',cost:14,hasColor:false,hasNote:false,group:'Drywall & Framing'},
+  {id:'gar-drywall-58',name:'Drywall 4×8 — ⅝" (20 min)',unit:'sheets',unitSize:1,sup:'G-Town Lumber Supply',cost:16,hasColor:false,hasNote:false,group:'Drywall & Framing'},
+  {id:'gar-metal-edge',name:'Drywall Metal Edge (8 ft stick)',unit:'sticks',unitSize:1,sup:'G-Town Lumber Supply',cost:2.50,hasColor:false,hasNote:false,group:'Drywall & Framing'},
+  {id:'gar-joint-compound',name:'Joint Compound (5 gal)',unit:'buckets',unitSize:1,sup:'Home Depot',cost:18,hasColor:false,hasNote:false,group:'Drywall & Framing'},
+  {id:'gar-drywall-screws',name:'Drywall Screws (box)',unit:'boxes',unitSize:1,sup:'Home Depot',cost:12,hasColor:false,hasNote:false,group:'Drywall & Framing'},
+  {id:'gar-stud-2x4',name:'2×4×8 Studs',unit:'studs',unitSize:1,sup:'G-Town Lumber Supply',cost:5.50,hasColor:false,hasNote:false,group:'Drywall & Framing'},
+  {id:'gar-insulation',name:'Insulation (roll)',unit:'rolls',unitSize:1,sup:'Home Depot',cost:35,hasColor:false,hasNote:false,group:'Drywall & Framing'},
+  // Paint
+  {id:'gar-primer',name:'Primer (1 gal)',unit:'gallons',unitSize:1,sup:'Sherwin Williams',cost:22,hasColor:false,hasNote:false,group:'Paint'},
+  {id:'gar-paint',name:'Interior Paint (1 gal)',unit:'gallons',unitSize:1,sup:'Sherwin Williams',cost:35,hasColor:true,hasNote:false,group:'Paint'},
+  {id:'gar-baseboard',name:'Baseboard Trim (16 ft)',unit:'pieces',unitSize:1,sup:'G-Town Lumber Supply',cost:10,hasColor:false,hasNote:true,noteLabel:'Type / style',group:'Paint'},
+  // Flooring
+  {id:'gar-lvp',name:'LVP Flooring',unit:'sq ft',unitSize:20,sup:'Floor & Decor',cost:3.50,hasColor:true,hasNote:false,group:'Flooring',bundle:'gar-lvp'},
+  {id:'gar-floor-resist',name:'Floor Resistant / Underlayment',unit:'sq ft',unitSize:100,sup:'Floor & Decor',cost:0.45,hasColor:false,hasNote:false,group:'Flooring',bundleChild:'gar-lvp'},
+  {id:'gar-floor-level',name:'Floor Leveling Compound (50 lb)',unit:'bags',unitSize:1,sup:'Home Depot',cost:22,hasColor:false,hasNote:false,group:'Flooring',bundleChild:'gar-lvp'},
+  {id:'gar-epoxy',name:'Garage Floor Epoxy (1 gal)',unit:'gallons',unitSize:1,sup:'Home Depot',cost:45,hasColor:true,hasNote:false,group:'Flooring'},
+  // Shelving & storage
+  {id:'gar-shelf-bracket',name:'Shelf Brackets',unit:'units',unitSize:1,sup:'Amazon',cost:8,hasColor:false,hasNote:false,group:'Shelving & Storage'},
+  {id:'gar-shelf-board',name:'Shelf Board (8 ft)',unit:'pieces',unitSize:1,sup:'G-Town Lumber Supply',cost:18,hasColor:false,hasNote:true,noteLabel:'Width / thickness',group:'Shelving & Storage'},
+  {id:'gar-shelf-system',name:'Wall Shelving System',unit:'units',unitSize:1,sup:'Home Depot',cost:120,hasColor:false,hasNote:true,noteLabel:'Brand / size',group:'Shelving & Storage'},
+  {id:'gar-pegboard',name:'Pegboard (4×8 sheet)',unit:'sheets',unitSize:1,sup:'Home Depot',cost:28,hasColor:false,hasNote:false,group:'Shelving & Storage'},
+  {id:'gar-peg-hooks',name:'Pegboard Hook Set',unit:'sets',unitSize:1,sup:'Home Depot',cost:15,hasColor:false,hasNote:false,group:'Shelving & Storage'},
+  // Electrical
+  {id:'gar-outlet-reg',name:'Outlets — Regular',unit:'units',unitSize:1,sup:'Crawford Electric',cost:3,hasColor:false,hasNote:false,group:'Electrical'},
+  {id:'gar-outlet-gfci',name:'Outlets — GFCI',unit:'units',unitSize:1,sup:'Crawford Electric',cost:12,hasColor:false,hasNote:false,group:'Electrical'},
+  {id:'gar-outlet-cover',name:'Outlet Covers',unit:'units',unitSize:1,sup:'Crawford Electric',cost:1,hasColor:false,hasNote:false,group:'Electrical'},
+  {id:'gar-switch-single',name:'Light Switch — Single',unit:'units',unitSize:1,sup:'Crawford Electric',cost:3.50,hasColor:false,hasNote:false,group:'Electrical'},
+  {id:'gar-switch-cover',name:'Switch Cover',unit:'units',unitSize:1,sup:'Crawford Electric',cost:1,hasColor:false,hasNote:false,group:'Electrical'},
+  {id:'gar-light-fixture',name:'Light Fixture — General',unit:'fixtures',unitSize:1,sup:'Amazon',cost:45,hasColor:false,hasNote:true,noteLabel:'Type / style',group:'Electrical'},
+  {id:'gar-work-light',name:'Work Light / Shop Light',unit:'units',unitSize:1,sup:'Amazon',cost:35,hasColor:false,hasNote:true,noteLabel:'Size / lumens',group:'Electrical'},
+  {id:'gar-can-fixed',name:'Can Light — Fixed (non-swivel)',unit:'units',unitSize:1,sup:'Amazon',cost:18,hasColor:false,hasNote:false,group:'Electrical'},
+  {id:'gar-can-swivel',name:'Can Light — Swivel / Gimbal',unit:'units',unitSize:1,sup:'Amazon',cost:22,hasColor:false,hasNote:false,group:'Electrical'},
+  {id:'gar-fan-large',name:'Ceiling Fan — Large (52"+)',unit:'units',unitSize:1,sup:'Amazon',cost:150,hasColor:false,hasNote:true,noteLabel:'Style / finish',group:'Electrical'},
+  {id:'gar-fan-medium',name:'Ceiling Fan — Medium (42"–52")',unit:'units',unitSize:1,sup:'Amazon',cost:110,hasColor:false,hasNote:true,noteLabel:'Style / finish',group:'Electrical'},
+  {id:'gar-wire-12-2',name:'Romex Wire 12/2 (250 ft roll)',unit:'rolls',unitSize:1,sup:'Crawford Electric',cost:75,hasColor:false,hasNote:false,group:'Electrical'},
+  // Garage door & entry
+  {id:'gar-door-full',name:'Full Garage Door Replacement',unit:'units',unitSize:1,sup:'Local supplier',cost:1200,hasColor:false,hasNote:true,noteLabel:'Size / style (e.g. 16×7 steel)',group:'Garage Door & Entry'},
+  {id:'gar-door-opener',name:'Garage Door Opener',unit:'units',unitSize:1,sup:'Home Depot',cost:280,hasColor:false,hasNote:true,noteLabel:'HP / brand',group:'Garage Door & Entry'},
+  {id:'gar-door-opener-remote',name:'Garage Door Remote / Keypad',unit:'units',unitSize:1,sup:'Amazon',cost:35,hasColor:false,hasNote:false,group:'Garage Door & Entry'},
+  {id:'gar-side-door-prehung',name:'Garage Side Door — Prehung',unit:'doors',unitSize:1,sup:'G-Town Lumber Supply',cost:350,hasColor:false,hasNote:true,noteLabel:'Size / style',group:'Garage Door & Entry'},
+  {id:'gar-side-door-handle',name:'Side Door Handle Set',unit:'sets',unitSize:1,sup:'Amazon',cost:45,hasColor:false,hasNote:true,noteLabel:'Finish',group:'Garage Door & Entry'},
+  {id:'gar-side-door-deadbolt',name:'Side Door Deadbolt',unit:'units',unitSize:1,sup:'Amazon',cost:40,hasColor:false,hasNote:true,noteLabel:'Finish',group:'Garage Door & Entry'},
+];
+
+const EXTERIOR_MATERIALS=[
+  // Paint & prep
+  {id:'ext-paint',name:'Exterior Paint (1 gal)',unit:'gallons',unitSize:1,sup:'Sherwin Williams',cost:42,hasColor:true,hasNote:false,group:'Paint & Prep'},
+  {id:'ext-primer',name:'Exterior Primer (1 gal)',unit:'gallons',unitSize:1,sup:'Sherwin Williams',cost:28,hasColor:false,hasNote:false,group:'Paint & Prep'},
+  {id:'ext-caulk',name:'Exterior Caulk (tube)',unit:'tubes',unitSize:1,sup:'Home Depot',cost:6,hasColor:false,hasNote:false,group:'Paint & Prep'},
+  {id:'ext-wood-filler',name:'Wood Filler / Epoxy',unit:'units',unitSize:1,sup:'Home Depot',cost:18,hasColor:false,hasNote:false,group:'Paint & Prep'},
+  {id:'ext-skim-coat',name:'Skim Coat (50 lb bag)',unit:'bags',unitSize:1,sup:'Home Depot',cost:22,hasColor:false,hasNote:false,group:'Paint & Prep'},
+  {id:'ext-concrete-primer',name:'Concrete Primer (1 gal)',unit:'gallons',unitSize:1,sup:'Sherwin Williams',cost:28,hasColor:false,hasNote:false,group:'Paint & Prep'},
+  {id:'ext-concrete-stain',name:'Concrete Stain (1 gal)',unit:'gallons',unitSize:1,sup:'Sherwin Williams',cost:35,hasColor:true,hasNote:false,group:'Paint & Prep'},
+  // Siding & trim
+  {id:'ext-siding',name:'Siding',unit:'sq ft',unitSize:1,sup:'G-Town Lumber Supply',cost:3.50,hasColor:false,hasNote:true,noteLabel:'Type / color',group:'Siding & Trim'},
+  {id:'ext-hardy-sheet',name:'Hardy Board (4×8 sheet)',unit:'sheets',unitSize:1,sup:'G-Town Lumber Supply',cost:32,hasColor:false,hasNote:false,group:'Siding & Trim'},
+  {id:'ext-fascia-4',name:'Fascia Trim — 4 inch (12 ft)',unit:'pieces',unitSize:1,sup:'G-Town Lumber Supply',cost:14,hasColor:false,hasNote:false,group:'Siding & Trim'},
+  {id:'ext-fascia-6',name:'Fascia Trim — 6 inch (12 ft)',unit:'pieces',unitSize:1,sup:'G-Town Lumber Supply',cost:18,hasColor:false,hasNote:false,group:'Siding & Trim'},
+  {id:'ext-fascia-joint',name:'Fascia Joint Strip — 1 inch',unit:'pieces',unitSize:1,sup:'G-Town Lumber Supply',cost:5,hasColor:false,hasNote:false,group:'Siding & Trim'},
+  {id:'ext-soffit',name:'Soffit Panel',unit:'panels',unitSize:1,sup:'G-Town Lumber Supply',cost:22,hasColor:false,hasNote:false,group:'Siding & Trim'},
+  {id:'ext-corner-trim',name:'Corner Trim (8 ft)',unit:'pieces',unitSize:1,sup:'G-Town Lumber Supply',cost:12,hasColor:false,hasNote:false,group:'Siding & Trim'},
+  {id:'ext-trim-custom-1',name:'Custom Trim / Fascia — 1',unit:'pieces',unitSize:1,sup:'G-Town Lumber Supply',cost:0,hasColor:false,hasNote:true,noteLabel:'Type / size / description',group:'Siding & Trim'},
+  {id:'ext-trim-custom-2',name:'Custom Trim / Fascia — 2',unit:'pieces',unitSize:1,sup:'G-Town Lumber Supply',cost:0,hasColor:false,hasNote:true,noteLabel:'Type / size / description',group:'Siding & Trim'},
+  // Doors & windows
+  {id:'ext-door-front',name:'Front Entry Door (prehung)',unit:'doors',unitSize:1,sup:'Home Depot',cost:650,hasColor:false,hasNote:true,noteLabel:'Size / style',group:'Doors & Windows'},
+  {id:'ext-door-back',name:'Back / Side Door (prehung)',unit:'doors',unitSize:1,sup:'Home Depot',cost:450,hasColor:false,hasNote:true,noteLabel:'Size / style',group:'Doors & Windows'},
+  {id:'ext-window',name:'Replacement Windows',unit:'windows',unitSize:1,sup:'Home Depot',cost:350,hasColor:false,hasNote:true,noteLabel:'Size (e.g. 3×4)',group:'Doors & Windows'},
+  {id:'ext-door-handle',name:'Exterior Door Handle Set',unit:'sets',unitSize:1,sup:'Amazon',cost:65,hasColor:false,hasNote:true,noteLabel:'Finish',group:'Doors & Windows'},
+  {id:'ext-deadbolt',name:'Deadbolt',unit:'units',unitSize:1,sup:'Amazon',cost:40,hasColor:false,hasNote:true,noteLabel:'Finish',group:'Doors & Windows'},
+  {id:'ext-mailbox-full',name:'Mailbox — Full (post + box)',unit:'units',unitSize:1,sup:'Home Depot',cost:65,hasColor:false,hasNote:true,noteLabel:'Style / color',group:'Doors & Windows'},
+  {id:'ext-mailbox-box',name:'Mailbox — Box only (replacement top)',unit:'units',unitSize:1,sup:'Home Depot',cost:28,hasColor:false,hasNote:true,noteLabel:'Style / color',group:'Doors & Windows'},
+  {id:'ext-chimney-cap',name:'Chimney Cap',unit:'units',unitSize:1,sup:'Local supplier',cost:0,hasColor:false,hasNote:true,noteLabel:'Measurements / type',group:'Doors & Windows'},
+  // Gutters & drainage
+  {id:'ext-gutter',name:'Gutters',unit:'lin ft',unitSize:1,sup:'Brothers B&B Supply',cost:5.50,hasColor:false,hasNote:false,group:'Gutters & Drainage'},
+  {id:'ext-gutter-guard',name:'Gutter Guards',unit:'lin ft',unitSize:1,sup:'Home Depot',cost:4,hasColor:false,hasNote:false,group:'Gutters & Drainage'},
+  {id:'ext-downspout',name:'Downspout (10 ft)',unit:'pieces',unitSize:1,sup:'Brothers B&B Supply',cost:5.502,hasColor:false,hasNote:false,group:'Gutters & Drainage'},
+  // Lighting
+  {id:'ext-light-fixture',name:'Exterior Light Fixture',unit:'fixtures',unitSize:1,sup:'Amazon',cost:55,hasColor:false,hasNote:true,noteLabel:'Style / finish',group:'Exterior Lighting'},
+  {id:'ext-flood-light',name:'Flood Light / Security Light',unit:'units',unitSize:1,sup:'Amazon',cost:45,hasColor:false,hasNote:false,group:'Exterior Lighting'},
+  {id:'ext-outlet',name:'Exterior Outlet (GFCI)',unit:'units',unitSize:1,sup:'Crawford Electric',cost:18,hasColor:false,hasNote:false,group:'Exterior Lighting'},
+  {id:'ext-outlet-cover',name:'Exterior Outlet Cover (weatherproof)',unit:'units',unitSize:1,sup:'Crawford Electric',cost:6,hasColor:false,hasNote:false,group:'Exterior Lighting'},
+  {id:'ext-doorbell',name:'Doorbell',unit:'units',unitSize:1,sup:'Amazon',cost:45,hasColor:false,hasNote:true,noteLabel:'Wired / wireless / video',group:'Exterior Lighting'},
+];
+
+const LANDSCAPE_MATERIALS=[
+  // Lawn
+  {id:'ls-sod',name:'Sod',unit:'sq ft',unitSize:500,sup:'Local supplier',cost:0.50,hasColor:false,hasNote:true,noteLabel:'Grass type',group:'Lawn'},
+  {id:'ls-seed',name:'Grass Seed (50 lb)',unit:'bags',unitSize:1,sup:'Home Depot',cost:55,hasColor:false,hasNote:true,noteLabel:'Grass type',group:'Lawn'},
+  {id:'ls-fertilizer',name:'Fertilizer (40 lb)',unit:'bags',unitSize:1,sup:'Home Depot',cost:28,hasColor:false,hasNote:false,group:'Lawn'},
+  {id:'ls-topsoil',name:'Topsoil (40 lb)',unit:'bags',unitSize:1,sup:'Home Depot',cost:5,hasColor:false,hasNote:false,group:'Lawn'},
+  // Beds & Planting
+  {id:'ls-plants',name:'Shrubs / Plants',unit:'units',unitSize:1,sup:'Home Depot',cost:25,hasColor:false,hasNote:true,noteLabel:'Type / variety',group:'Beds & Planting'},
+  {id:'ls-mulch',name:'Mulch (2 cu ft bag)',unit:'bags',unitSize:1,sup:'Home Depot',cost:6,hasColor:false,hasNote:true,noteLabel:'Color',group:'Beds & Planting'},
+  {id:'ls-gravel-white',name:'White Limestone Gravel (50 lb bag)',unit:'bags',unitSize:1,sup:'Home Depot',cost:7,hasColor:false,hasNote:false,group:'Beds & Planting'},
+  {id:'ls-gravel-black',name:'Black Star Gravel (50 lb bag)',unit:'bags',unitSize:1,sup:'Home Depot',cost:7,hasColor:false,hasNote:false,group:'Beds & Planting'},
+  {id:'ls-edging-metal',name:'Metal Landscape Edging (10 ft)',unit:'pieces',unitSize:1,sup:'G-Town Lumber Supply',cost:14,hasColor:false,hasNote:false,group:'Beds & Planting'},
+  {id:'ls-bender-board',name:'Bender Board (20 ft)',unit:'pieces',unitSize:1,sup:'G-Town Lumber Supply',cost:22,hasColor:false,hasNote:false,group:'Beds & Planting'},
+  {id:'ls-weed-barrier',name:'Weed Barrier Fabric (50 sq ft)',unit:'rolls',unitSize:1,sup:'Home Depot',cost:14,hasColor:false,hasNote:false,group:'Beds & Planting'},
+  // Hardscape
+  {id:'ls-concrete',name:'Concrete (80 lb bag)',unit:'bags',unitSize:1,sup:'Home Depot',cost:7,hasColor:false,hasNote:false,group:'Hardscape'},
+  {id:'ls-gravel-gen',name:'Gravel (50 lb bag)',unit:'bags',unitSize:1,sup:'Home Depot',cost:5,hasColor:false,hasNote:false,group:'Hardscape'},
+  {id:'ls-step-2x2',name:'Stepping Stone — 2×2',unit:'units',unitSize:1,sup:'Home Depot',cost:10,hasColor:false,hasNote:false,group:'Hardscape'},
+  {id:'ls-step-2x4',name:'Stepping Stone — 2×4',unit:'units',unitSize:1,sup:'Home Depot',cost:16,hasColor:false,hasNote:false,group:'Hardscape'},
+  {id:'ls-chopped-stone',name:'Chopped Stone 4×4 (1 ton)',unit:'tons',unitSize:1,sup:'Local supplier',cost:220,hasColor:false,hasNote:false,group:'Hardscape'},
+  {id:'ls-cement-bag',name:'Cement (1 bag)',unit:'bags',unitSize:1,sup:'Home Depot',cost:12,hasColor:false,hasNote:false,group:'Hardscape'},
+  {id:'ls-sand-yard',name:'Sand (1 yard)',unit:'yards',unitSize:1,sup:'Local supplier',cost:45,hasColor:false,hasNote:false,group:'Hardscape'},
+  // Irrigation — Zone
+  {id:'ls-irr-control',name:'Sprinkler Control Panel',unit:'units',unitSize:1,sup:'Home Depot',cost:120,hasColor:false,hasNote:true,noteLabel:'# of zones',group:'Irrigation — Zone'},
+  {id:'ls-irr-head-fixed',name:'Sprinkler Head — Fixed (swim clear)',unit:'units',unitSize:1,sup:'Home Depot',cost:6,hasColor:false,hasNote:false,group:'Irrigation — Zone'},
+  {id:'ls-irr-head-popup',name:'Sprinkler Head — Pop-up',unit:'units',unitSize:1,sup:'Home Depot',cost:8,hasColor:false,hasNote:false,group:'Irrigation — Zone'},
+  {id:'ls-irr-head-rotor',name:'Sprinkler Head — Rotator',unit:'units',unitSize:1,sup:'Home Depot',cost:10,hasColor:false,hasNote:false,group:'Irrigation — Zone'},
+  {id:'ls-irr-pipe-1',name:'Irrigation Pipe — 1 inch (10 ft)',unit:'pieces',unitSize:1,sup:'Home Depot',cost:6,hasColor:false,hasNote:false,group:'Irrigation — Zone'},
+  {id:'ls-irr-pipe-34',name:'Irrigation Pipe — ¾ inch (10 ft)',unit:'pieces',unitSize:1,sup:'Home Depot',cost:4.50,hasColor:false,hasNote:false,group:'Irrigation — Zone'},
+  {id:'ls-irr-pipe-half',name:'Irrigation Pipe — ½ inch (10 ft)',unit:'pieces',unitSize:1,sup:'Home Depot',cost:3,hasColor:false,hasNote:false,group:'Irrigation — Zone'},
+  {id:'ls-drip-line',name:'Drip Irrigation Line (50 ft roll)',unit:'rolls',unitSize:1,sup:'Home Depot',cost:22,hasColor:false,hasNote:false,group:'Irrigation — Zone'},
+  // Drainage
+  {id:'ls-drain-french',name:'French Drain Pipe (10 ft)',unit:'pieces',unitSize:1,sup:'Home Depot',cost:12,hasColor:false,hasNote:false,group:'Drainage'},
+  {id:'ls-drain-catch',name:'Catch Basin / Drain Box',unit:'units',unitSize:1,sup:'Home Depot',cost:18,hasColor:false,hasNote:false,group:'Drainage'},
+  {id:'ls-drain-grate',name:'Drain Grate Cover',unit:'units',unitSize:1,sup:'Home Depot',cost:10,hasColor:false,hasNote:false,group:'Drainage'},
+  // Fencing
+  {id:'ls-fence-cedar-6',name:'Cedar Fence Board — 6 inch (6 ft)',unit:'pieces',unitSize:1,sup:'Viking Fence',cost:4.50,hasColor:false,hasNote:false,group:'Fencing'},
+  {id:'ls-fence-treat-6',name:'Treated Fence Board — 6 inch (6 ft)',unit:'pieces',unitSize:1,sup:'Viking Fence',cost:3.50,hasColor:false,hasNote:false,group:'Fencing'},
+  {id:'ls-fence-2x4x8',name:'Treated 2×4×8 Rail',unit:'pieces',unitSize:1,sup:'Viking Fence',cost:7,hasColor:false,hasNote:false,group:'Fencing'},
+  {id:'ls-fence-2x4x10',name:'Treated 2×4×10 Rail',unit:'pieces',unitSize:1,sup:'Viking Fence',cost:9,hasColor:false,hasNote:false,group:'Fencing'},
+  {id:'ls-fence-post-4x4',name:'Treated 4×4×8 Post',unit:'pieces',unitSize:1,sup:'Viking Fence',cost:14,hasColor:false,hasNote:false,group:'Fencing'},
+  {id:'ls-fence-concrete',name:'Quick-Setting Concrete (50 lb bag)',unit:'bags',unitSize:1,sup:'Viking Fence',cost:8,hasColor:false,hasNote:false,group:'Fencing'},
+  {id:'ls-fence-gate-latch',name:'Gate Latch Set',unit:'sets',unitSize:1,sup:'Viking Fence',cost:22,hasColor:false,hasNote:true,noteLabel:'Style / finish',group:'Fencing'},
+  {id:'ls-fence-coil-nails',name:'Coil Nails (box)',unit:'boxes',unitSize:1,sup:'Viking Fence',cost:35,hasColor:false,hasNote:false,group:'Fencing'},
+  {id:'ls-fence-screws',name:'2½ inch Screws (box)',unit:'boxes',unitSize:1,sup:'Viking Fence',cost:12,hasColor:false,hasNote:false,group:'Fencing'},
+];
+
+const SYSTEMS_MATERIALS=[
+  // HVAC
+  {id:'sys-ac-unit',name:'AC Unit',unit:'units',unitSize:1,sup:'Ferguson',cost:2500,hasColor:false,hasNote:true,noteLabel:'Tonnage / model',group:'HVAC'},
+  {id:'sys-furnace',name:'Furnace',unit:'units',unitSize:1,sup:'Ferguson',cost:1800,hasColor:false,hasNote:true,noteLabel:'BTU / model',group:'HVAC'},
+  {id:'sys-ac-filter',name:'AC Filter',unit:'units',unitSize:1,sup:'Crawford Electric',cost:20,hasColor:false,hasNote:true,noteLabel:'Size (e.g. 16×25×1)',group:'HVAC'},
+  {id:'sys-thermostat',name:'Thermostat',unit:'units',unitSize:1,sup:'Amazon',cost:120,hasColor:false,hasNote:true,noteLabel:'Smart or standard',group:'HVAC'},
+  // Plumbing
+  {id:'sys-water-heater',name:'Water Heater',unit:'units',unitSize:1,sup:'Ferguson',cost:650,hasColor:false,hasNote:true,noteLabel:'Size (gal) / type',group:'Plumbing'},
+  {id:'sys-pex',name:'PEX Pipe (100 ft roll)',unit:'rolls',unitSize:1,sup:'Ferguson',cost:55,hasColor:false,hasNote:true,noteLabel:'Diameter',group:'Plumbing'},
+  {id:'sys-shutoff-valve',name:'Shut-off Valve',unit:'units',unitSize:1,sup:'Ferguson',cost:12,hasColor:false,hasNote:false,group:'Plumbing'},
+  {id:'sys-p-trap',name:'P-Trap',unit:'units',unitSize:1,sup:'Ferguson',cost:8,hasColor:false,hasNote:false,group:'Plumbing'},
+  // Electrical
+  {id:'sys-panel',name:'Electrical Panel',unit:'units',unitSize:1,sup:'Crawford Electric',cost:1200,hasColor:false,hasNote:true,noteLabel:'Amps (e.g. 200A)',group:'Electrical'},
+  {id:'sys-breaker',name:'Circuit Breaker',unit:'units',unitSize:1,sup:'Crawford Electric',cost:15,hasColor:false,hasNote:true,noteLabel:'Amps',group:'Electrical'},
+  {id:'sys-romex-14',name:'Romex Wire 14/2 (250 ft)',unit:'rolls',unitSize:1,sup:'Crawford Electric',cost:55,hasColor:false,hasNote:false,group:'Electrical'},
+  {id:'sys-romex-12',name:'Romex Wire 12/2 (250 ft)',unit:'rolls',unitSize:1,sup:'Crawford Electric',cost:75,hasColor:false,hasNote:false,group:'Electrical'},
+  // Roofing
+  {id:'sys-roofing',name:'Roofing Shingles (per square)',unit:'squares',unitSize:1,sup:'84 Lumber',cost:120,hasColor:false,hasNote:true,noteLabel:'Color / brand',group:'Roofing'},
+  {id:'sys-roof-felt',name:'Roofing Felt (roll)',unit:'rolls',unitSize:1,sup:'84 Lumber',cost:45,hasColor:false,hasNote:false,group:'Roofing'},
+  {id:'sys-roof-nails',name:'Roofing Nails (1 lb)',unit:'boxes',unitSize:1,sup:'Home Depot',cost:8,hasColor:false,hasNote:false,group:'Roofing'},
+  {id:'sys-drip-edge',name:'Drip Edge (10 ft)',unit:'pieces',unitSize:1,sup:'G-Town Lumber Supply',cost:6,hasColor:false,hasNote:false,group:'Roofing'},
+  {id:'sys-ridge-cap',name:'Ridge Cap Shingles (bundle)',unit:'bundles',unitSize:1,sup:'G-Town Lumber Supply',cost:55,hasColor:false,hasNote:false,group:'Roofing'},
+  // Foundation
+  {id:'sys-pier',name:'Foundation Piers',unit:'piers',unitSize:1,sup:'Local supplier',cost:150,hasColor:false,hasNote:false,group:'Foundation'},
+  {id:'sys-concrete-mix',name:'Concrete Mix (80 lb)',unit:'bags',unitSize:1,sup:'Home Depot',cost:7,hasColor:false,hasNote:false,group:'Foundation'},
+  {id:'sys-rebar',name:'Rebar (20 ft)',unit:'pieces',unitSize:1,sup:'G-Town Lumber Supply',cost:12,hasColor:false,hasNote:false,group:'Foundation'},
+];
+
+const SUPPLIES_ITEMS=[
+  {id:'sup-trash-bags',name:'Trash Bags (box)',unit:'boxes',sup:'Home Depot',cost:18},
+  {id:'sup-screw-mix',name:'Misc Screws & Nails (assorted box)',unit:'boxes',sup:'Home Depot',cost:22},
+  {id:'sup-blue-tape',name:"Blue Painter's Tape (roll)",unit:'rolls',sup:'Home Depot',cost:6},
+  {id:'sup-cleaner',name:'All-Purpose Cleaner (spray)',unit:'bottles',sup:'Home Depot',cost:5},
+  {id:'sup-go-green',name:'Go Green Cleaner (gallon)',unit:'gallons',sup:'Home Depot',cost:14},
+  {id:'sup-paper-towels',name:'Paper Towel Rolls',unit:'rolls',sup:'Home Depot',cost:2},
+  {id:'sup-gloves-disp',name:'Disposable Gloves (box of 100)',unit:'boxes',sup:'Home Depot',cost:12},
+  {id:'sup-gloves-work',name:'Work Gloves (pair)',unit:'pairs',sup:'Home Depot',cost:8},
+  {id:'sup-face-mask',name:'Face Masks (box of 50)',unit:'boxes',sup:'Home Depot',cost:14},
+  {id:'sup-safety-glasses',name:'Safety Glasses',unit:'units',sup:'Home Depot',cost:5},
+  {id:'sup-pencils',name:'Pencils (box)',unit:'boxes',sup:'Home Depot',cost:4},
+  {id:'sup-drop-cloth',name:'Drop Cloth / Plastic Sheeting',unit:'units',sup:'Home Depot',cost:10},
+  {id:'sup-tape-wide',name:"Painter's Tape — Wide (roll)",unit:'rolls',sup:'Home Depot',cost:9},
+  {id:'sup-bucket-5gal',name:'5 Gallon Bucket',unit:'units',sup:'Home Depot',cost:6},
+  {id:'sup-roller-cover',name:'Paint Roller Covers',unit:'units',sup:'Sherwin Williams',cost:4},
+  {id:'sup-roller-frame',name:'Paint Roller Frame',unit:'units',sup:'Sherwin Williams',cost:8},
+  {id:'sup-paint-brush',name:'Paint Brushes',unit:'units',sup:'Sherwin Williams',cost:6},
+  {id:'sup-utility-knife',name:'Utility Knife + Blades',unit:'units',sup:'Home Depot',cost:12},
+  {id:'sup-caulk-gun',name:'Caulk Gun',unit:'units',sup:'Home Depot',cost:8},
+];
+
+const ALL_MATS=[...GENERAL_MATERIALS,...KITCHEN_MATERIALS,...BATH_MATERIALS,...BEDROOM_MATERIALS,...GARAGE_MATERIALS,...EXTERIOR_MATERIALS,...LANDSCAPE_MATERIALS,...SYSTEMS_MATERIALS];
+
+// ── STATE ─────────────────────────────────────────────────────────────────────
+let state={
+  address:'',sqft:0,beds:1,fullBaths:1,halfBaths:0,
+  hasOffice:false,hasGarage:false,garageSize:1,kitchenOpen:false,hasDining:false,
+  hasExterior:false,hasLandscape:false,
+  majorSystems:{roof:false,foundation:false,ac:false,electrical:false,plumbing:false,waterHeater:false},
+  materials:{},  // pageId+matId -> {qty, color, supplier, unitCost}
+  misc:{},       // pageId -> [{name,qty,unit,supplier,unitCost}]
+  roomSqft:{},   // pageId -> sqft
+  roomHeight:{},  // pageId -> ceiling height
+  supplies:{},    // sup id -> {qty, supplier, unitCost}
+};
+let pages=[];
+let currentPage=0;
+
+function buildPages(){
+  pages=[];
+  pages.push({id:'property',title:'Property Info',icon:'🏠',type:'property'});
+  pages.push({id:'general',title:'General / Whole House & Living Areas',icon:'🔨',type:'materials',mats:GENERAL_MATERIALS});
+  pages.push({id:'kitchen',title:'Kitchen',icon:'🍳',type:'materials',mats:KITCHEN_MATERIALS});
+  pages.push({id:'bath-master',title:'Master Bathroom',icon:'🚿',type:'materials',mats:BATH_MATERIALS});
+  for(let i=1;i<state.fullBaths;i++) pages.push({id:'bath-'+i,title:'Guest Bath '+i,icon:'🛁',type:'materials',mats:BATH_MATERIALS});
+  for(let i=1;i<=state.halfBaths;i++) pages.push({id:'halfbath-'+i,title:'Half Bath '+i,icon:'🚽',type:'materials',mats:BATH_MATERIALS.slice(0,7)});
+  pages.push({id:'bed-master',title:'Master Bedroom',icon:'🛏',type:'bedroom',mats:BEDROOM_MATERIALS});
+  for(let i=1;i<state.beds;i++) pages.push({id:'bed-'+i,title:'Bedroom '+i,icon:'🛏',type:'bedroom',mats:BEDROOM_MATERIALS});
+  if(state.hasOffice) pages.push({id:'office',title:'Office',icon:'💼',type:'bedroom',mats:BEDROOM_MATERIALS});
+  if(state.hasGarage) pages.push({id:'garage',title:'Garage',icon:'🚗',type:'garage',mats:GARAGE_MATERIALS});
+  if(state.hasExterior) pages.push({id:'exterior',title:'Exterior',icon:'🏡',type:'materials',mats:EXTERIOR_MATERIALS});
+  if(state.hasLandscape) pages.push({id:'landscape',title:'Landscaping',icon:'🌿',type:'materials',mats:LANDSCAPE_MATERIALS});
+  if(Object.values(state.majorSystems).some(v=>v)) pages.push({id:'systems',title:'Major Systems',icon:'⚙️',type:'materials',mats:SYSTEMS_MATERIALS});
+  pages.push({id:'misc-supplies',title:'Jobsite Supplies',icon:'🧰',type:'supplies'});
+  pages.push({id:'summary',title:'Master Order List',icon:'📦',type:'summary'});
+}
+
+function key(pageId,matId){return pageId+'||'+matId;}
+function getMat(pageId,matId){
+  const k=key(pageId,matId);
+  if(!state.materials[k]) state.materials[k]={qty:0,color:'',supplier:'',unitCost:0};
+  return state.materials[k];
+}
+function getMisc(pageId){
+  if(!state.misc[pageId]) state.misc[pageId]=[];
+  return state.misc[pageId];
+}
+
+// ── RENDER ────────────────────────────────────────────────────────────────────
+function renderPage(){
+  const container=document.getElementById('pages-container');
+  container.innerHTML='';
+  const pg=pages[currentPage];
+  document.getElementById('progress-fill').style.width=((currentPage+1)/pages.length*100)+'%';
+  if(pg.type==='property') renderPropertyPage(container);
+  else if(pg.type==='garage') renderGaragePage(container,pg);
+  else if(pg.type==='materials') renderMaterialsPage(container,pg);
+  else if(pg.type==='bedroom') renderBedroomPage(container,pg);
+  else if(pg.type==='supplies') renderSuppliesPage(container,pg);
+  else if(pg.type==='summary') renderSummaryPage(container);
+  addNav(container);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function addNav(container){
+  const nav=document.createElement('div');nav.className='nav-bar';
+  const left=document.createElement('div');
+  if(currentPage>0){const b=document.createElement('button');b.className='btn';b.textContent='← Back';b.onclick=()=>{saveCurrent();currentPage--;renderPage();};left.appendChild(b);}
+  const mid=document.createElement('div');mid.className='step-indicator';mid.textContent=(currentPage+1)+' of '+pages.length;
+  const right=document.createElement('div');
+  if(currentPage<pages.length-1){const b=document.createElement('button');b.className='btn primary';b.textContent='Next →';b.onclick=()=>{saveCurrent();if(currentPage===0){savePropertyPage();buildPages();}currentPage++;renderPage();};right.appendChild(b);}
+  nav.appendChild(left);nav.appendChild(mid);nav.appendChild(right);
+  container.appendChild(nav);
+}
+
+// ── PROPERTY PAGE ─────────────────────────────────────────────────────────────
+function renderPropertyPage(container){
+  const d=document.createElement('div');
+  d.innerHTML=`
+  <div class="page-title">🏠 Property Info</div>
+  <div class="page-sub" style="color:rgba(255,255,255,.8)">This drives which pages and room counts appear next.</div>
+  <div class="section-label">Address & size</div>
+  <div class="field"><label>Address / Deal name</label><input type="text" id="p-address" value="${state.address}" placeholder="123 Main St"></div>
+  <div class="grid2">
+    <div class="field"><label>Total sq ft</label><input type="number" id="p-sqft" value="${state.sqft||''}" placeholder="0" min="0" step="50"></div>
+  </div>
+  <div class="section-label">Rooms</div>
+  <div class="grid3">
+    <div class="field"><label>Bedrooms</label><select id="p-beds">${[1,2,3,4,5].map(n=>`<option value="${n}"${state.beds===n?' selected':''}>${n}</option>`).join('')}</select></div>
+    <div class="field"><label>Full baths</label><select id="p-fullbaths">${[1,2,3,4].map(n=>`<option value="${n}"${state.fullBaths===n?' selected':''}>${n}</option>`).join('')}</select></div>
+    <div class="field"><label>Half baths</label><select id="p-halfbaths">${[0,1,2].map(n=>`<option value="${n}"${state.halfBaths===n?' selected':''}>${n}</option>`).join('')}</select></div>
+  </div>
+  <div class="check-group" style="margin-bottom:1rem">
+    <div class="check-item"><input type="checkbox" id="p-office" ${state.hasOffice?'checked':''}><label for="p-office">Office / flex room</label></div>
+    <div class="check-item"><input type="checkbox" id="p-dining" ${state.hasDining?'checked':''}><label for="p-dining">Separate dining room</label></div>
+    <div class="check-item"><input type="checkbox" id="p-kitchen-open" ${state.kitchenOpen?'checked':''}><label for="p-kitchen-open">Open concept kitchen / living</label></div>
+  </div>
+  <div class="section-label">Garage</div>
+  <div class="check-group" style="margin-bottom:.75rem">
+    <div class="check-item"><input type="checkbox" id="p-garage" ${state.hasGarage?'checked':''}><label for="p-garage">Has garage</label></div>
+  </div>
+  <div class="grid2" id="garage-size-wrap" style="${state.hasGarage?'':'display:none'}">
+    <div class="field"><label>Garage size</label><select id="p-garage-size"><option value="1"${state.garageSize===1?' selected':''}>1 car</option><option value="2"${state.garageSize===2?' selected':''}>2 car</option><option value="3"${state.garageSize===3?' selected':''}>3 car</option></select></div>
+  </div>
+  <div class="section-label">Exterior & landscaping</div>
+  <div class="check-group" style="margin-bottom:1rem">
+    <div class="check-item"><input type="checkbox" id="p-exterior" ${state.hasExterior?'checked':''}><label for="p-exterior">Exterior work needed</label></div>
+    <div class="check-item"><input type="checkbox" id="p-landscape" ${state.hasLandscape?'checked':''}><label for="p-landscape">Landscaping needed</label></div>
+  </div>
+  <div class="section-label">Major systems</div>
+  <div class="check-group">
+    ${[['roof','New Roof'],['foundation','Foundation / Pier Work'],['ac','HVAC / AC'],['electrical','Electrical Panel'],['plumbing','Plumbing Repipe'],['waterHeater','Water Heater']].map(([k,lbl])=>
+      `<div class="check-item"><input type="checkbox" id="p-sys-${k}" ${state.majorSystems[k]?'checked':''}><label for="p-sys-${k}">${lbl}</label></div>`
+    ).join('')}
+  </div>`;
+  container.appendChild(d);
+  document.getElementById('p-garage').addEventListener('change',e=>{document.getElementById('garage-size-wrap').style.display=e.target.checked?'':'none';});
+}
+
+function savePropertyPage(){
+  state.address=document.getElementById('p-address').value;
+  state.sqft=parseFloat(document.getElementById('p-sqft').value)||0;
+  state.beds=parseInt(document.getElementById('p-beds').value)||1;
+  state.fullBaths=parseInt(document.getElementById('p-fullbaths').value)||1;
+  state.halfBaths=parseInt(document.getElementById('p-halfbaths').value)||0;
+  state.hasOffice=document.getElementById('p-office').checked;
+  state.hasDining=document.getElementById('p-dining').checked;
+  state.kitchenOpen=document.getElementById('p-kitchen-open').checked;
+  state.hasGarage=document.getElementById('p-garage').checked;
+  const gs=document.getElementById('p-garage-size');state.garageSize=gs?parseInt(gs.value)||1:1;
+  state.hasExterior=document.getElementById('p-exterior').checked;
+  state.hasLandscape=document.getElementById('p-landscape').checked;
+  ['roof','foundation','ac','electrical','plumbing','waterHeater'].forEach(k=>{state.majorSystems[k]=document.getElementById('p-sys-'+k).checked;});
+}
+
+// ── GENERIC MATERIALS PAGE ────────────────────────────────────────────────────
+function renderGaragePage(container,pg){
+  const d=document.createElement('div');
+  const savedSqft=state.roomSqft&&state.roomSqft[pg.id]?state.roomSqft[pg.id]:'';
+  const savedHeight=state.roomHeight&&state.roomHeight[pg.id]?state.roomHeight[pg.id]:'';
+  d.innerHTML=`<div class="page-title">${pg.icon} ${pg.title}</div>
+  <div class="page-sub" style="color:rgba(255,255,255,.8)">Enter quantities needed for the garage. Adjust supplier and cost as needed.</div>
+  <div style="background:#c8d4dc;border:1px solid #a8b8c4;border-radius:10px;padding:.85rem 1rem;margin-bottom:1.25rem;display:grid;grid-template-columns:auto auto auto 1fr;align-items:center;gap:14px;flex-wrap:wrap">
+    <div style="font-size:13px;font-weight:500;color:#1a2a3a;white-space:nowrap">Garage sq ft</div>
+    <input type="number" id="room-sqft-${pg.id}" value="${savedSqft}" placeholder="e.g. 400" min="0" step="10" style="width:110px;padding:7px 10px;border:1px solid #a8b8c4;border-radius:7px;font-size:14px;font-family:inherit;background:#dde6ec;color:#1a2a3a" oninput="autoCalcRoom('${pg.id}')">
+    <div style="font-size:13px;font-weight:500;color:#1a2a3a;white-space:nowrap;margin-left:8px">Ceiling height (ft)</div>
+    <input type="number" id="room-height-${pg.id}" value="${savedHeight}" placeholder="e.g. 9" min="0" step="0.5" style="width:90px;padding:7px 10px;border:1px solid #a8b8c4;border-radius:7px;font-size:14px;font-family:inherit;background:#dde6ec;color:#1a2a3a" oninput="autoCalcRoom('${pg.id}')">
+  </div>
+  <div id="room-calcs-${pg.id}" style="background:#1a3d5c;border-radius:8px;padding:.6rem 1rem;margin-bottom:1rem;display:flex;gap:1.5rem;flex-wrap:wrap;font-size:12px;color:rgba(255,255,255,.85)"></div>`;
+  const groups={};
+  pg.mats.forEach(m=>{const g=m.group||'General';if(!groups[g])groups[g]=[];groups[g].push(m);});
+  Object.entries(groups).forEach(([grp,mats])=>{
+    const card=document.createElement('div');card.className='room-card';
+    card.innerHTML=`<div class="room-card-title">${grp}</div>`;
+    card.appendChild(buildMatTable(pg.id,mats,true));
+    d.appendChild(card);
+  });
+  d.appendChild(buildMiscSection(pg.id));
+  container.appendChild(d);
+}
+
+function renderMaterialsPage(container,pg){
+  const d=document.createElement('div');
+  const savedSqft=state.roomSqft&&state.roomSqft[pg.id]?state.roomSqft[pg.id]:'';
+  const savedHeight=state.roomHeight&&state.roomHeight[pg.id]?state.roomHeight[pg.id]:'';
+  d.innerHTML=`<div class="page-title">${pg.icon} ${pg.title}</div>
+  <div class="page-sub" style="color:rgba(255,255,255,.8)">Enter quantity for each item you need. Leave 0 to skip. Adjust supplier and cost as needed.</div>
+  <div style="background:#c8d4dc;border:1px solid #a8b8c4;border-radius:10px;padding:.85rem 1rem;margin-bottom:1.25rem;display:grid;grid-template-columns:auto auto auto 1fr;align-items:center;gap:14px;flex-wrap:wrap">
+    <div style="font-size:13px;font-weight:500;color:#1a2a3a;white-space:nowrap">Room sq ft</div>
+    <input type="number" id="room-sqft-${pg.id}" value="${savedSqft}" placeholder="e.g. 180" min="0" step="10" style="width:110px;padding:7px 10px;border:1px solid #a8b8c4;border-radius:7px;font-size:14px;font-family:inherit;background:#dde6ec;color:#1a2a3a" oninput="autoCalcRoom('${pg.id}')">
+    <div style="font-size:13px;font-weight:500;color:#1a2a3a;white-space:nowrap;margin-left:8px">Ceiling height (ft)</div>
+    <input type="number" id="room-height-${pg.id}" value="${savedHeight}" placeholder="e.g. 9" min="0" step="0.5" style="width:90px;padding:7px 10px;border:1px solid #a8b8c4;border-radius:7px;font-size:14px;font-family:inherit;background:#dde6ec;color:#1a2a3a" oninput="autoCalcRoom('${pg.id}')">
+  </div>
+  <div id="room-calcs-${pg.id}" style="background:#1a3d5c;border-radius:8px;padding:.6rem 1rem;margin-bottom:1rem;display:flex;gap:1.5rem;flex-wrap:wrap;font-size:12px;color:rgba(255,255,255,.85)"></div>`;
+  const hasGroups=pg.mats.some(m=>m.group);
+  if(hasGroups){
+    const groups={};
+    pg.mats.forEach(m=>{const g=m.group||'General';if(!groups[g])groups[g]=[];groups[g].push(m);});
+    Object.entries(groups).forEach(([grp,mats])=>{
+      const card=document.createElement('div');card.className='room-card';
+      card.innerHTML=`<div class="room-card-title">${grp}</div>`;
+      card.appendChild(buildMatTable(pg.id,mats,true));
+      d.appendChild(card);
+    });
+  } else {
+    d.appendChild(buildMatTable(pg.id,pg.mats));
+  }
+  d.appendChild(buildMiscSection(pg.id));
+  container.appendChild(d);
+}
+
+// ── BEDROOM PAGE (grouped) ────────────────────────────────────────────────────
+function renderBedroomPage(container,pg){
+  const d=document.createElement('div');
+  const savedSqft=state.roomSqft&&state.roomSqft[pg.id]?state.roomSqft[pg.id]:'';
+  const savedHeight=state.roomHeight&&state.roomHeight[pg.id]?state.roomHeight[pg.id]:'';
+  d.innerHTML=`<div class="page-title">${pg.icon} ${pg.title}</div>
+  <div class="page-sub" style="color:rgba(255,255,255,.8)">Enter quantities needed. Add a color/style note for flooring and paint items.</div>
+  <div style="background:#c8d4dc;border:1px solid #a8b8c4;border-radius:10px;padding:.85rem 1rem;margin-bottom:1.25rem;display:grid;grid-template-columns:auto auto auto 1fr;align-items:center;gap:14px;flex-wrap:wrap">
+    <div style="font-size:13px;font-weight:500;color:#1a2a3a;white-space:nowrap">Room sq ft</div>
+    <input type="number" id="room-sqft-${pg.id}" value="${savedSqft}" placeholder="e.g. 180" min="0" step="10" style="width:110px;padding:7px 10px;border:1px solid #a8b8c4;border-radius:7px;font-size:14px;font-family:inherit;background:#dde6ec;color:#1a2a3a" oninput="autoCalcRoom('${pg.id}')">
+    <div style="font-size:13px;font-weight:500;color:#1a2a3a;white-space:nowrap;margin-left:8px">Ceiling height (ft)</div>
+    <input type="number" id="room-height-${pg.id}" value="${savedHeight}" placeholder="e.g. 9" min="0" step="0.5" style="width:90px;padding:7px 10px;border:1px solid #a8b8c4;border-radius:7px;font-size:14px;font-family:inherit;background:#dde6ec;color:#1a2a3a" oninput="autoCalcRoom('${pg.id}')">
+  </div>
+  <div id="room-calcs-${pg.id}" style="background:#1a3d5c;border-radius:8px;padding:.6rem 1rem;margin-bottom:1rem;display:flex;gap:1.5rem;flex-wrap:wrap;font-size:12px;color:rgba(255,255,255,.85)"></div>`;
+  const groups={};
+  pg.mats.forEach(m=>{const g=m.group||'General';if(!groups[g])groups[g]=[];groups[g].push(m);});
+  Object.entries(groups).forEach(([grp,mats])=>{
+    const card=document.createElement('div');card.className='room-card';
+    card.innerHTML=`<div class="room-card-title">${grp}</div>`;
+    card.appendChild(buildMatTable(pg.id,mats,true));
+    d.appendChild(card);
+  });
+  d.appendChild(buildMiscSection(pg.id));
+  container.appendChild(d);
+}
+
+// Paint coverage: 1 gal covers ~350 sq ft per coat, assume 2 coats walls + 1 coat ceiling
+// Wall area = perimeter * height. We estimate perimeter as 4 * sqrt(sqft) * 1.15 (approx for typical room)
+// Flooring: sqft + 10% waste factor
+window.autoCalcRoom=function(pageId){
+  const sqftEl=document.getElementById('room-sqft-'+pageId);
+  const heightEl=document.getElementById('room-height-'+pageId);
+  const calcsEl=document.getElementById('room-calcs-'+pageId);
+  const sqft=parseFloat(sqftEl?sqftEl.value:0)||0;
+  const height=parseFloat(heightEl?heightEl.value:0)||0;
+  if(!calcsEl) return;
+
+  if(!sqft&&!height){calcsEl.innerHTML='';return;}
+
+  // Estimates
+  const floorSqft=sqft>0?Math.ceil(sqft*1.1):0; // +10% waste
+  const sideLen=sqft>0?Math.sqrt(sqft):0;
+  const perim=sqft>0?sideLen*4*1.15:0;
+  const wallArea=sqft>0&&height>0?Math.ceil(perim*height):0;
+  const ceilArea=sqft>0?Math.ceil(sqft):0;
+  const totalPaintArea=wallArea+ceilArea;
+  const paintGals=totalPaintArea>0?Math.ceil(totalPaintArea/350*2):0; // 2 coats walls
+  const primerGals=totalPaintArea>0?Math.ceil(totalPaintArea/400):0;  // 1 coat primer
+
+  let html='';
+  if(floorSqft>0) html+=`<span><b>${floorSqft} sq ft</b> flooring (w/ 10% waste)</span>`;
+  if(wallArea>0) html+=`<span><b>~${wallArea} sq ft</b> wall area</span>`;
+  if(ceilArea>0) html+=`<span><b>${ceilArea} sq ft</b> ceiling</span>`;
+  if(paintGals>0) html+=`<span><b>~${paintGals} gal</b> paint (2 coats)</span>`;
+  if(primerGals>0) html+=`<span><b>~${primerGals} gal</b> primer</span>`;
+  calcsEl.innerHTML=html;
+
+  // Auto-fill flooring quantities if empty
+  const floorIds=['bd-lvp','bd-carpet','bd-floor-resist','bd-carpet-pad',
+    'k-lvp','k-carpet','k-floor-resist','k-carpet-pad',
+    'gar-lvp','gar-floor-resist','gar-epoxy',
+    'gen-lvp','gen-carpet','gen-floor-resist','gen-carpet-pad'];
+  floorIds.forEach(fid=>{
+    const qEl=document.getElementById('qty-'+pageId+'-'+fid);
+    if(qEl&&(!qEl.value||qEl.value==='0')&&floorSqft>0){
+      qEl.value=floorSqft;
+      const saved=getMat(pageId,fid);
+      saved.qty=floorSqft;
+    }
+  });
+
+  // Auto-fill paint quantities if empty
+  const paintMap={
+    'bd-paint':paintGals,'bd-primer':primerGals,
+    'gar-paint':paintGals,'gar-primer':primerGals,
+    'paint-int':paintGals,'primer':primerGals,
+    'k-paint':paintGals,
+  };
+  Object.entries(paintMap).forEach(([fid,qty])=>{
+    const qEl=document.getElementById('qty-'+pageId+'-'+fid);
+    if(qEl&&(!qEl.value||qEl.value==='0')&&qty>0){
+      qEl.value=qty;
+      const saved=getMat(pageId,fid);
+      saved.qty=qty;
+    }
+  });
+};
+
+function buildMatTable(pageId,mats,inCard=false){
+  const wrap=document.createElement('div');
+  if(!inCard){wrap.className='room-card';}
+  const tbl=document.createElement('table');tbl.className='mat-table';tbl.innerHTML=`<thead><tr><th>Material</th><th>Qty</th><th>Unit</th><th>Supplier</th><th>Unit $</th></tr></thead>`;
+  const tbody=document.createElement('tbody');
+
+  // Build a map of bundle parent ids for quick lookup
+  const bundleParents={};
+  mats.forEach(m=>{if(m.bundle) bundleParents[m.bundle]=m.id;});
+
+  mats.forEach(mat=>{
+    const saved=getMat(pageId,mat.id);
+    if(!saved.supplier) saved.supplier=mat.sup;
+    if(!saved.unitCost) saved.unitCost=mat.cost;
+
+    const isBundleChild=!!mat.bundleChild;
+    const tr=document.createElement('tr');
+    tr.id=`tr-${pageId}-${mat.id}`;
+
+    // Bundle children start hidden unless parent already has qty
+    if(isBundleChild){
+      const parentMatId=bundleParents[mat.bundleChild];
+      const parentSaved=getMat(pageId,parentMatId||'');
+      const parentHasQty=parentSaved&&parentSaved.qty>0;
+      tr.style.display=parentHasQty?'':'none';
+      tr.style.background='#b8cad4';
+    }
+
+    const indentStyle=isBundleChild?'padding-left:18px;color:#2a4a6a;font-size:12px;':'font-weight:500';
+    const bundgeIcon=isBundleChild?'<span style="color:#4a7a9a;margin-right:4px">↳</span>':'';
+
+    tr.innerHTML=`
+      <td><div style="${indentStyle}">${bundgeIcon}${mat.name}</div>
+        ${mat.unitSize>1&&!isBundleChild?`<span class="unit-tag">sold in ${mat.unitSize}s</span>`:''}
+        ${mat.hasColor?`<input type="text" class="color-input" id="clr-${pageId}-${mat.id}" value="${saved.color||''}" placeholder="Color / style">` : ''}
+        ${mat.hasNote?`<input type="text" class="color-input" id="note-${pageId}-${mat.id}" value="${saved.note||''}" placeholder="${mat.noteLabel||'Note'}">` : ''}</td>
+      <td><input type="number" id="qty-${pageId}-${mat.id}" value="${saved.qty||''}" placeholder="0" min="0" step="1"></td>
+      <td style="color:#2a4a6a;font-size:12px;text-align:center;white-space:nowrap">${mat.unit}</td>
+      <td><select id="sup-${pageId}-${mat.id}">${SUPPLIERS.map(s=>`<option value="${s}"${saved.supplier===s?' selected':''}>${s}</option>`).join('')}</select></td>
+      <td><input type="number" class="cost-input" id="cost-${pageId}-${mat.id}" value="${saved.unitCost||''}" placeholder="0.00" min="0" step="0.01"></td>`;
+
+    // Live save on every input
+    const liveSave=()=>{
+      const saved2=getMat(pageId,mat.id);
+      const qe=document.getElementById('qty-'+pageId+'-'+mat.id);
+      const se=document.getElementById('sup-'+pageId+'-'+mat.id);
+      const ce=document.getElementById('cost-'+pageId+'-'+mat.id);
+      const cle=document.getElementById('clr-'+pageId+'-'+mat.id);
+      const ne=document.getElementById('note-'+pageId+'-'+mat.id);
+      if(qe) saved2.qty=parseFloat(qe.value)||0;
+      if(se) saved2.supplier=se.value;
+      if(ce) saved2.unitCost=parseFloat(ce.value)||0;
+      if(cle) saved2.color=cle.value;
+      if(ne) saved2.note=ne.value;
+    };
+    setTimeout(()=>{
+      ['qty','sup','cost','clr','note'].forEach(prefix=>{
+        const el=document.getElementById(prefix+'-'+pageId+'-'+mat.id);
+        if(el) el.addEventListener('input',liveSave),el.addEventListener('change',liveSave);
+      });
+    },100);
+    // If this is a bundle parent, wire up qty change to show/hide children
+    if(mat.bundle){
+      const bundleKey=mat.bundle;
+      const childMats=mats.filter(m=>m.bundleChild===bundleKey);
+      setTimeout(()=>{
+        const qtyEl=document.getElementById('qty-'+pageId+'-'+mat.id);
+        if(!qtyEl)return;
+        const updateChildren=(qty)=>{
+          childMats.forEach(cm=>{
+            const childTr=document.getElementById('tr-'+pageId+'-'+cm.id);
+            if(childTr) childTr.style.display=qty>0?'':'none';
+            // Auto-set child qty to match parent if child is empty
+            const childQtyEl=document.getElementById('qty-'+pageId+'-'+cm.id);
+            if(childQtyEl&&qty>0&&(!childQtyEl.value||childQtyEl.value==='0')){
+              childQtyEl.value=qty;
+              getMat(pageId,cm.id).qty=qty;
+            }
+          });
+        };
+        qtyEl.addEventListener('input',e=>updateChildren(parseFloat(e.target.value)||0));
+        // Run once on load
+        updateChildren(parseFloat(qtyEl.value)||0);
+      },50);
+    }
+
+    tbody.appendChild(tr);
+  });
+  tbl.appendChild(tbody);
+  wrap.appendChild(tbl);
+  return wrap;
+}
+
+function buildMiscSection(pageId){
+  const miscList=getMisc(pageId);
+  const section=document.createElement('div');section.className='room-card';
+  section.innerHTML=`<div class="room-card-title">➕ Misc / Additional Items</div><div id="misc-rows-${pageId}"></div>`;
+  const addBtn=document.createElement('button');addBtn.className='add-misc-btn';addBtn.textContent='+ Add item';
+  addBtn.onclick=()=>addMiscRow(pageId);
+  section.appendChild(addBtn);
+  // Render existing
+  setTimeout(()=>{
+    const container=document.getElementById('misc-rows-'+pageId);
+    if(container) miscList.forEach((_,i)=>renderMiscRow(pageId,i));
+  },0);
+  return section;
+}
+
+function renderMiscRow(pageId,idx){
+  const container=document.getElementById('misc-rows-'+pageId);if(!container)return;
+  const m=getMisc(pageId)[idx];
+  const row=document.createElement('div');row.className='misc-row';row.id=`misc-row-${pageId}-${idx}`;
+  row.innerHTML=`
+    <input type="text" placeholder="Item name" value="${m.name||''}" onchange="getMisc('${pageId}')[${idx}].name=this.value">
+    <input type="number" placeholder="Qty" value="${m.qty||''}" min="0" step="1" onchange="getMisc('${pageId}')[${idx}].qty=parseFloat(this.value)||0">
+    <input type="text" placeholder="Unit" value="${m.unit||''}" style="flex:.7" onchange="getMisc('${pageId}')[${idx}].unit=this.value">
+    <select onchange="getMisc('${pageId}')[${idx}].supplier=this.value">${SUPPLIERS.map(s=>`<option value="${s}"${(m.supplier||'Home Depot')===s?' selected':''}>${s}</option>`).join('')}</select>
+    <input type="number" placeholder="Cost" value="${m.unitCost||''}" min="0" step="0.01" style="width:70px" onchange="getMisc('${pageId}')[${idx}].unitCost=parseFloat(this.value)||0">
+    <button onclick="removeMiscRow('${pageId}',${idx})" title="Remove">✕</button>`;
+  container.appendChild(row);
+}
+
+function addMiscRow(pageId){
+  getMisc(pageId).push({name:'',qty:0,unit:'units',supplier:'Home Depot',unitCost:0});
+  renderMiscRow(pageId,getMisc(pageId).length-1);
+}
+window.addMiscRow=addMiscRow;
+
+function removeMiscRow(pageId,idx){
+  getMisc(pageId).splice(idx,1);
+  // Re-render all misc rows
+  const container=document.getElementById('misc-rows-'+pageId);if(!container)return;
+  container.innerHTML='';
+  getMisc(pageId).forEach((_,i)=>renderMiscRow(pageId,i));
+}
+window.removeMiscRow=removeMiscRow;
+
+// ── SAVE CURRENT PAGE ─────────────────────────────────────────────────────────
+function saveCurrent(){
+  const pg=pages[currentPage];
+  if(pg.type==='property'){savePropertyPage();return;}
+  if(pg.type==='supplies'){
+    SUPPLIES_ITEMS.forEach(item=>{
+      if(!state.supplies[item.id]) state.supplies[item.id]={qty:0,supplier:item.sup,unitCost:item.cost};
+      const qEl=document.getElementById('sup-qty-'+item.id);
+      const sEl=document.getElementById('sup-sup-'+item.id);
+      const cEl=document.getElementById('sup-cost-'+item.id);
+      if(qEl) state.supplies[item.id].qty=parseFloat(qEl.value)||0;
+      if(sEl) state.supplies[item.id].supplier=sEl.value;
+      if(cEl) state.supplies[item.id].unitCost=parseFloat(cEl.value)||0;
+    });
+    return;
+  }
+  // Save room sqft
+  const sqftEl=document.getElementById('room-sqft-'+pg.id);
+  if(sqftEl){
+    if(!state.roomSqft) state.roomSqft={};
+    state.roomSqft[pg.id]=parseFloat(sqftEl.value)||0;
+  }
+  const heightEl=document.getElementById('room-height-'+pg.id);
+  if(heightEl){
+    if(!state.roomHeight) state.roomHeight={};
+    state.roomHeight[pg.id]=parseFloat(heightEl.value)||0;
+  }
+  const mats=pg.mats||[];
+  mats.forEach(mat=>{
+    const saved=getMat(pg.id,mat.id);
+    const qel=document.getElementById('qty-'+pg.id+'-'+mat.id);
+    const sel=document.getElementById('sup-'+pg.id+'-'+mat.id);
+    const cel=document.getElementById('cost-'+pg.id+'-'+mat.id);
+    const clrel=document.getElementById('clr-'+pg.id+'-'+mat.id);
+    const notel=document.getElementById('note-'+pg.id+'-'+mat.id);
+    if(qel) saved.qty=parseFloat(qel.value)||0;
+    if(sel) saved.supplier=sel.value;
+    if(cel) saved.unitCost=parseFloat(cel.value)||0;
+    if(clrel) saved.color=clrel.value;
+    if(notel) saved.note=notel.value;
+  });
+}
+
+// ── SUMMARY PAGE ──────────────────────────────────────────────────────────────
+function renderSuppliesPage(container,pg){
+  const d=document.createElement('div');
+  d.innerHTML=`<div class="page-title">🧰 Jobsite Supplies</div>
+  <div class="page-sub" style="color:rgba(255,255,255,.8)">Consumables and jobsite essentials. Enter quantity needed — leave 0 to skip.</div>`;
+
+  const card=document.createElement('div');card.className='room-card';
+  const tbl=document.createElement('table');tbl.className='mat-table';
+  tbl.innerHTML=`<thead><tr><th>Item</th><th>Qty</th><th>Unit</th><th>Supplier</th><th>Unit $</th></tr></thead>`;
+  const tbody=document.createElement('tbody');
+
+  SUPPLIES_ITEMS.forEach(item=>{
+    if(!state.supplies[item.id]) state.supplies[item.id]={qty:0,supplier:item.sup,unitCost:item.cost};
+    const s=state.supplies[item.id];
+    const tr=document.createElement('tr');
+    tr.innerHTML=`
+      <td style="font-weight:500">${item.name}</td>
+      <td><input type="number" id="sup-qty-${item.id}" value="${s.qty||''}" placeholder="0" min="0" step="1" style="width:70px;padding:5px 7px;border:1px solid #a8b8c4;border-radius:6px;font-size:13px;background:#dde6ec;color:#1a2a3a;text-align:center"></td>
+      <td style="color:#2a4a6a;font-size:12px;text-align:center">${item.unit}</td>
+      <td><select id="sup-sup-${item.id}" style="padding:5px 6px;border:1px solid #a8b8c4;border-radius:6px;font-size:12px;background:#dde6ec;color:#1a2a3a;width:100%">${SUPPLIERS.map(sv=>`<option value="${sv}"${s.supplier===sv?' selected':''}>${sv}</option>`).join('')}</select></td>
+      <td><input type="number" id="sup-cost-${item.id}" value="${s.unitCost||''}" placeholder="0.00" min="0" step="0.01" style="width:80px;padding:5px 7px;border:1px solid #a8b8c4;border-radius:6px;font-size:13px;background:#dde6ec;color:#1a2a3a;text-align:right"></td>`;
+    tbody.appendChild(tr);
+  });
+  tbl.appendChild(tbody);
+  card.appendChild(tbl);
+  d.appendChild(card);
+
+  // Extra blank items
+  const extraCard=document.createElement('div');extraCard.className='room-card';
+  extraCard.innerHTML=`<div class="room-card-title">Additional Items</div>`;
+  const extraDiv=document.createElement('div');extraDiv.id='extra-supplies-rows';
+  if(!state.misc['misc-supplies']) state.misc['misc-supplies']=[];
+  extraCard.appendChild(extraDiv);
+  const addBtn=document.createElement('button');addBtn.className='add-misc-btn';addBtn.textContent='+ Add item';
+  addBtn.onclick=()=>addMiscRow('misc-supplies');
+  extraCard.appendChild(addBtn);
+  d.appendChild(extraCard);
+  container.appendChild(d);
+
+  // Render existing extra rows
+  setTimeout(()=>{
+    const c=document.getElementById('misc-rows-misc-supplies')||extraDiv;
+    extraDiv.id='misc-rows-misc-supplies';
+    state.misc['misc-supplies'].forEach((_,i)=>renderMiscRow('misc-supplies',i));
+  },0);
+}
+
+function saveAllPages(){
+  // Save every non-property, non-summary page
+  const savedPage=currentPage;
+  pages.forEach((pg,idx)=>{
+    if(pg.type==='property'||pg.type==='summary') return;
+    if(pg.type==='supplies'){
+      SUPPLIES_ITEMS.forEach(item=>{
+        if(!state.supplies[item.id]) state.supplies[item.id]={qty:0,supplier:item.sup,unitCost:item.cost};
+        const qEl=document.getElementById('sup-qty-'+item.id);
+        const sEl=document.getElementById('sup-sup-'+item.id);
+        const cEl=document.getElementById('sup-cost-'+item.id);
+        if(qEl) state.supplies[item.id].qty=parseFloat(qEl.value)||0;
+        if(sEl) state.supplies[item.id].supplier=sEl.value;
+        if(cEl) state.supplies[item.id].unitCost=parseFloat(cEl.value)||0;
+      });
+      return;
+    }
+    const mats=pg.mats||[];
+    mats.forEach(mat=>{
+      const saved=getMat(pg.id,mat.id);
+      const qel=document.getElementById('qty-'+pg.id+'-'+mat.id);
+      const sel=document.getElementById('sup-'+pg.id+'-'+mat.id);
+      const cel=document.getElementById('cost-'+pg.id+'-'+mat.id);
+      const clrel=document.getElementById('clr-'+pg.id+'-'+mat.id);
+      const notel=document.getElementById('note-'+pg.id+'-'+mat.id);
+      if(qel) saved.qty=parseFloat(qel.value)||0;
+      if(sel) saved.supplier=sel.value;
+      if(cel) saved.unitCost=parseFloat(cel.value)||0;
+      if(clrel) saved.color=clrel.value;
+      if(notel) saved.note=notel.value;
+    });
+    const sqftEl=document.getElementById('room-sqft-'+pg.id);
+    if(sqftEl){if(!state.roomSqft)state.roomSqft={};state.roomSqft[pg.id]=parseFloat(sqftEl.value)||0;}
+    const heightEl=document.getElementById('room-height-'+pg.id);
+    if(heightEl){if(!state.roomHeight)state.roomHeight={};state.roomHeight[pg.id]=parseFloat(heightEl.value)||0;}
+  });
+}
+
+function renderSummaryPage(container){
+  saveAllPages(); // ensure all data is captured before rendering
+  const bySupplier={};
+  let grandTotal=0;
+
+  // Standard materials
+  Object.entries(state.materials).forEach(([k,m])=>{
+    if(!m.qty||m.qty<=0)return;
+    const [pageId,...rest]=k.split('||');const matId=rest.join('||');
+    const pg=pages.find(p=>p.id===pageId);
+    const matDef=ALL_MATS.find(x=>x.id===matId);
+    if(!matDef)return;
+    const lineTotal=m.qty*m.unitCost;grandTotal+=lineTotal;
+    const sup=m.supplier||'Other';
+    if(!bySupplier[sup])bySupplier[sup]=[];
+    const notePart=m.note?` [${m.note}]`:''; bySupplier[sup].push({name:matDef.name+(m.color?` — ${m.color}`:'')+notePart,room:pg?pg.title:'General',qty:m.qty,unit:matDef.unit,unitCost:m.unitCost,lineTotal});
+  });
+
+  // Supplies / consumables
+  Object.entries(state.supplies||{}).forEach(([sid,s])=>{
+    if(!s.qty||s.qty<=0) return;
+    const itemDef=SUPPLIES_ITEMS.find(x=>x.id===sid);
+    if(!itemDef) return;
+    const lineTotal=s.qty*s.unitCost;grandTotal+=lineTotal;
+    const sup=s.supplier||'Home Depot';
+    if(!bySupplier[sup]) bySupplier[sup]=[];
+    bySupplier[sup].push({name:itemDef.name,room:'Jobsite Supplies',qty:s.qty,unit:itemDef.unit,unitCost:s.unitCost,lineTotal});
+  });
+
+  // Misc
+  Object.entries(state.misc).forEach(([pageId,items])=>{
+    const pg=pages.find(p=>p.id===pageId);
+    items.forEach(m=>{
+      if(!m.qty||m.qty<=0||!m.name)return;
+      const lineTotal=m.qty*(m.unitCost||0);grandTotal+=lineTotal;
+      const sup=m.supplier||'Other';
+      if(!bySupplier[sup])bySupplier[sup]=[];
+      bySupplier[sup].push({name:m.name+' (misc)',room:pg?pg.title:'General',qty:m.qty,unit:m.unit||'units',unitCost:m.unitCost||0,lineTotal});
+    });
+  });
+
+  const d=document.createElement('div');
+  // Build room sqft display string
+  const roomSqftParts=Object.entries(state.roomSqft||{}).filter(([,v])=>v>0).map(([pid,sq])=>{const pg=pages.find(p=>p.id===pid);const ht=state.roomHeight&&state.roomHeight[pid]?` / ${state.roomHeight[pid]}ft ceiling`:'';return pg?`${pg.title}: ${sq} sq ft${ht}`:null;}).filter(Boolean);
+  const sqftNote=roomSqftParts.length?` | Room sizes: ${roomSqftParts.join(', ')}`:'';
+  d.innerHTML=`<div class="page-title">📦 Master Order List — By Vendor</div>
+  <div class="page-sub">${state.address||'Your property'}${sqftNote} — all items with qty > 0, grouped by supplier.</div>
+  <div class="grand-total-bar"><div><div class="lbl">Estimated material total</div></div><div class="val">$${grandTotal.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})}</div></div>`;
+
+  if(!Object.keys(bySupplier).length){
+    d.innerHTML+=`<div class="empty-msg">No materials entered yet — go back and add quantities.</div>`;
+  } else {
+    Object.entries(bySupplier).sort().forEach(([sup,items])=>{
+      const supTotal=items.reduce((a,b)=>a+b.lineTotal,0);
+      const block=document.createElement('div');block.className='supplier-block';
+      block.innerHTML=`<div class="supplier-header"><span>📍 ${sup}</span><span class="supplier-total">$${supTotal.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})}</span></div>
+        <div class="master-row hdr"><div>Material</div><div>Room</div><div>Qty</div><div style="text-align:right">Subtotal</div></div>
+        ${items.map(i=>`<div class="master-row"><div>${i.name}</div><div style="color:#2a4a6a;font-size:12px">${i.room}</div><div>${i.qty} ${i.unit}</div><div style="text-align:right;font-weight:500">$${i.lineTotal.toFixed(2)}</div></div>`).join('')}`;
+      d.appendChild(block);
+    });
+  }
+
+  const expBar=document.createElement('div');expBar.className='export-bar';
+  expBar.innerHTML=`
+    <button class="btn primary" onclick="window.print()">🖨 Print Full Order / PDF</button>
+    <button class="btn" onclick="copyList()">📋 Copy full list</button>
+    <button class="btn" onclick="printByVendor()">📍 Print by vendor</button>`;
+  d.appendChild(expBar);
+  d.innerHTML+=`<div id="copy-confirm" style="font-size:12px;color:rgba(255,255,255,.9);margin-top:6px;display:none">Copied to clipboard!</div>`;
+  container.appendChild(d);
+}
+
+window.copyList=function(){
+  saveAllPages();
+  const lines=['MASTER MATERIAL LIST','Property: '+(state.address||'—'),'Generated: '+new Date().toLocaleDateString(),''];
+  const bySupplier={};
+  Object.entries(state.materials).forEach(([k,m])=>{
+    if(!m.qty||m.qty<=0)return;
+    const [pageId,...rest]=k.split('||');const matId=rest.join('||');
+    const pg=pages.find(p=>p.id===pageId);
+    const matDef=ALL_MATS.find(x=>x.id===matId);if(!matDef)return;
+    const sup=m.supplier||'Other';if(!bySupplier[sup])bySupplier[sup]=[];
+    bySupplier[sup].push(`  ${matDef.name}${m.color?' ('+m.color+')':''} | ${pg?pg.title:''} | ${m.qty} ${matDef.unit} @ $${m.unitCost} = $${(m.qty*m.unitCost).toFixed(2)}`);
+  });
+  Object.entries(state.misc).forEach(([pageId,items])=>{
+    const pg=pages.find(p=>p.id===pageId);
+    items.forEach(m=>{if(!m.qty||!m.name)return;const sup=m.supplier||'Other';if(!bySupplier[sup])bySupplier[sup]=[];bySupplier[sup].push(`  ${m.name} (misc) | ${pg?pg.title:''} | ${m.qty} ${m.unit||'units'} @ $${m.unitCost||0} = $${((m.qty)*(m.unitCost||0)).toFixed(2)}`);});
+  });
+  Object.entries(bySupplier).sort().forEach(([sup,items])=>{lines.push('--- '+sup+' ---');lines.push(...items);lines.push('');});
+  navigator.clipboard.writeText(lines.join('\n')).then(()=>{const el=document.getElementById('copy-confirm');if(el){el.style.display='block';setTimeout(()=>el.style.display='none',2500);}});
+};
+
+window.printByVendor=function(){
+  saveAllPages();
+  const bySupplier={};
+  let grandTotal=0;
+  // Rebuild by supplier same as summary
+  Object.entries(state.materials).forEach(([k,m])=>{
+    if(!m.qty||m.qty<=0)return;
+    const [pageId,...rest]=k.split('||');const matId=rest.join('||');
+    const pg=pages.find(p=>p.id===pageId);
+    const matDef=ALL_MATS.find(x=>x.id===matId);if(!matDef)return;
+    const lineTotal=m.qty*m.unitCost;grandTotal+=lineTotal;
+    const sup=m.supplier||'Other';if(!bySupplier[sup])bySupplier[sup]=[];
+    bySupplier[sup].push({name:matDef.name+(m.color?' — '+m.color:'')+(m.note?' ['+m.note+']':''),room:pg?pg.title:'',qty:m.qty,unit:matDef.unit,unitCost:m.unitCost,lineTotal});
+  });
+  Object.entries(state.supplies||{}).forEach(([sid,s])=>{
+    if(!s.qty||s.qty<=0)return;
+    const itemDef=SUPPLIES_ITEMS.find(x=>x.id===sid);if(!itemDef)return;
+    const lineTotal=s.qty*s.unitCost;grandTotal+=lineTotal;
+    const sup=s.supplier||'Home Depot';if(!bySupplier[sup])bySupplier[sup]=[];
+    bySupplier[sup].push({name:itemDef.name,room:'Jobsite Supplies',qty:s.qty,unit:itemDef.unit,unitCost:s.unitCost,lineTotal});
+  });
+  Object.entries(state.misc||{}).forEach(([pageId,items])=>{
+    const pg=pages.find(p=>p.id===pageId);
+    items.forEach(m=>{if(!m.qty||!m.name)return;const lineTotal=m.qty*(m.unitCost||0);grandTotal+=lineTotal;const sup=m.supplier||'Other';if(!bySupplier[sup])bySupplier[sup]=[];bySupplier[sup].push({name:m.name+' (misc)',room:pg?pg.title:'',qty:m.qty,unit:m.unit||'units',unitCost:m.unitCost||0,lineTotal});});
+  });
+
+  const addr=state.address||'Property';
+  const date=new Date().toLocaleDateString();
+  let html=`<!DOCTYPE html><html><head><title>Vendor Orders — ${addr}</title>
+  <style>
+    body{font-family:-apple-system,sans-serif;font-size:13px;color:#1a1a1a;padding:1rem}
+    h1{font-size:18px;margin-bottom:4px}
+    .subtitle{font-size:12px;color:#888;margin-bottom:1.5rem}
+    .vendor{page-break-inside:avoid;margin-bottom:2rem;border:1px solid #ddd;border-radius:8px;overflow:hidden}
+    .vendor-header{background:#1b4f72;color:#fff;padding:.75rem 1rem;display:flex;justify-content:space-between;align-items:center}
+    .vendor-name{font-size:15px;font-weight:600}
+    .vendor-total{font-size:14px}
+    table{width:100%;border-collapse:collapse}
+    th{font-size:11px;text-transform:uppercase;letter-spacing:.05em;padding:6px 10px;background:#f5f5f5;text-align:left;border-bottom:1px solid #ddd}
+    td{padding:6px 10px;border-bottom:1px solid #f0f0f0;font-size:13px}
+    tr:last-child td{border-bottom:none}
+    .grand{font-size:15px;font-weight:600;margin-top:1rem;text-align:right;padding:.5rem}
+    @media print{button{display:none}.vendor{page-break-inside:avoid}}
+  </style></head><body>
+  <button onclick="window.print()" style="margin-bottom:1rem;padding:7px 16px;cursor:pointer;background:#1b4f72;color:#fff;border:none;border-radius:6px;font-size:13px">🖨 Print All Vendor Orders</button>
+  <h1>M.N. Teas Investment — Material Orders</h1>
+  <div class="subtitle">${addr} &nbsp;|&nbsp; Generated ${date} &nbsp;|&nbsp; Grand Total: $${grandTotal.toLocaleString('en-US',{minimumFractionDigits:2})}</div>`;
+
+  Object.entries(bySupplier).sort().forEach(([sup,items])=>{
+    const supTotal=items.reduce((a,b)=>a+b.lineTotal,0);
+    html+=`<div class="vendor">
+      <div class="vendor-header"><span class="vendor-name">📍 ${sup}</span><span class="vendor-total">Order Total: $${supTotal.toLocaleString('en-US',{minimumFractionDigits:2})}</span></div>
+      <table><thead><tr><th>Item</th><th>Room / Area</th><th>Qty</th><th>Unit</th><th>Unit $</th><th>Subtotal</th></tr></thead><tbody>
+      ${items.map(i=>`<tr><td>${i.name}</td><td style="color:#888">${i.room}</td><td>${i.qty}</td><td>${i.unit}</td><td>$${i.unitCost.toFixed(2)}</td><td style="font-weight:500">$${i.lineTotal.toFixed(2)}</td></tr>`).join('')}
+      </tbody></table></div>`;
+  });
+  html+=`<div class="grand">Grand Total: $${grandTotal.toLocaleString('en-US',{minimumFractionDigits:2})}</div></body></html>`;
+
+  const win=window.open('','_blank');
+  if(win){win.document.write(html);win.document.close();}
+};
+
+window.getMisc=getMisc;
+
+window.resetAll=function(){
+  if(!confirm('Clear everything and start a new project?'))return;
+  state={address:'',sqft:0,beds:1,fullBaths:1,halfBaths:0,hasOffice:false,hasGarage:false,garageSize:1,kitchenOpen:false,hasDining:false,hasExterior:false,hasLandscape:false,majorSystems:{roof:false,foundation:false,ac:false,electrical:false,plumbing:false,waterHeater:false},materials:{},misc:{},roomSqft:{},roomHeight:{},supplies:{}};
+  currentPage=0;buildPages();renderPage();
+};
+
+buildPages();
+renderPage();
+</script>
+</body>
+</html>
